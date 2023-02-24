@@ -59,6 +59,8 @@ public class PantryTest {
         p.removeIngredient(i1);
         p.removeIngredient(i3);
         assertEquals(0, p.getIngredientListSize());
+        p.removeIngredient(i3);
+        assertEquals(0, p.getIngredientListSize());
     }
 
     /*@Test

@@ -268,7 +268,7 @@ public class WeeklyPlanner {
         if (pantryIngredient.getQuantity() > i.getQuantity()) {
             pantryIngredient.decreaseQuantity(i.getQuantity());
         } else {
-            pantry.removeIngredient(i);
+            pantry.removeIngredient(pantryIngredient);
         }
         addToShoppingList(i);
     }

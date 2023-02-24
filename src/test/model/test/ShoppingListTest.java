@@ -58,6 +58,8 @@ public class ShoppingListTest {
         s.removeIngredient(i1);
         s.removeIngredient(i3);
         assertEquals(0, s.getIngredientListSize());
+        s.removeIngredient(i3);
+        assertEquals(0, s.getIngredientListSize());
     }
 
     /*@Test
