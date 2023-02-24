@@ -23,9 +23,7 @@ These are the user features I want to incorporate in my application:
 them in real life
 - As a user, I want to be able to select a meal and see the ingredients 
 required to make it
-- As a user, I want to be able to view a table of my planned meals grouped 
-by day of the week and type of meal (eg - breakfast, lunch, dinner)
-- As a user, I want to be able to change the number of columns 
-and their titles in my table if I eat more or less than 3 meals a day
+- As a user, I want to be able to view my planned meals and their type 
+(eg - breakfast, lunch, dinner) for each day of the week 
 - As a user, I want to be able to view an automatically generated shopping
 list of ingredients I need for the week but haven't yet bought
