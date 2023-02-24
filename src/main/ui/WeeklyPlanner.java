@@ -149,7 +149,7 @@ public class WeeklyPlanner {
 
         while (loop) {
             System.out.println("Do you want to add more ingredients? Type 'y' for yes or anything else for no.");
-            input.nextLine();
+            //input.nextLine();
             String addMore = input.nextLine();
             addMore = addMore.toLowerCase();
             if (addMore.equals("y")) {
@@ -234,6 +234,7 @@ public class WeeklyPlanner {
         String ingredientName = input.nextLine();
         System.out.println("Please enter the quantity of this ingredient you want to add or remove");
         double ingredientQuantity = input.nextDouble();
+        input.nextLine();
         Ingredient ingredient = new Ingredient(ingredientName, ingredientQuantity);
         return ingredient;
     }
@@ -248,18 +249,19 @@ public class WeeklyPlanner {
                 i.decreaseQuantity(pantryIngredient.getQuantity());
                 shoppingList.addIngredient(i);
             } else {
-                shoppingListIngredient.decreaseQuantity(pantryIngredient.getQuantity());
+                shoppingListIngredient.increaseQuantity(
+                        i.getQuantity() - pantryIngredient.getQuantity() - shoppingListIngredient.getQuantity());
             }
         }
     }
 
     private void addToPantry(Ingredient i) {
-        Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
-        if (!pantry.contains(i)) {
-            pantry.addIngredient(i);
-        } else {
-            pantryIngredient.increaseQuantity(i.getQuantity());
-        }
+        //Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
+       // if (!pantry.contains(i)) {
+        pantry.addIngredient(i);
+       // } else {
+        //    pantryIngredient.increaseQuantity(i.getQuantity());
+       // }
         removeFromShoppingList(i);
     }
 
