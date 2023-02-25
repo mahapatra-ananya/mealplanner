@@ -97,6 +97,9 @@ public class WeeklyPlanner {
                     || day.equals("fri") || day.equals("sat")) {
                 Meal m = whichMealToAdd();
                 mealsForTheWeek.add(m);
+                for (Ingredient i: m.getIngredients()) {
+                    addToShoppingList(i);
+                }
                 addMealToSpecificDay(day, m);
                 loop = false;
             } else if (day.equals("q")) {
@@ -143,7 +146,7 @@ public class WeeklyPlanner {
     private void addIngredientsToMeal(Meal m) {
         Ingredient i = createIngredient();
         m.addIngredient(i);
-        addToShoppingList(i);
+        //addToShoppingList(i);
 
         Boolean loop = true;
 
@@ -155,7 +158,7 @@ public class WeeklyPlanner {
             if (addMore.equals("y")) {
                 Ingredient moreIngredient = createIngredient();
                 m.addIngredient(moreIngredient);
-                addToShoppingList(moreIngredient);
+               // addToShoppingList(moreIngredient);
             } else {
                 loop = false;
             }
@@ -242,48 +245,65 @@ public class WeeklyPlanner {
     private void addToShoppingList(Ingredient i) {
         Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
         Ingredient shoppingListIngredient = shoppingList.getSpecificIngredient(i);
+        double quantityOfIngredientRequiredForWeek = quantityOfIngredientRequiredForWeek(i);
         if (!pantry.contains(i)) {
-            shoppingList.addIngredient(i);
-        } else if (pantryIngredient.getQuantity() < i.getQuantity()) {
-            if (shoppingListIngredient == null) {
+            Ingredient ingredientToAdd = new Ingredient(i.getName(), quantityOfIngredientRequiredForWeek);
+            shoppingList.addIngredient(ingredientToAdd);
+        } else if (pantryIngredient.getQuantity() < quantityOfIngredientRequiredForWeek) {
+            if (!shoppingList.contains(i)) {
                 i.decreaseQuantity(pantryIngredient.getQuantity());
                 shoppingList.addIngredient(i);
             } else {
                 shoppingListIngredient.increaseQuantity(
-                        i.getQuantity() - pantryIngredient.getQuantity() - shoppingListIngredient.getQuantity());
+                        quantityOfIngredientRequiredForWeek
+                                - pantryIngredient.getQuantity()
+                                - shoppingListIngredient.getQuantity());
             }
         }
     }
 
     private void addToPantry(Ingredient i) {
-        //Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
-       // if (!pantry.contains(i)) {
         pantry.addIngredient(i);
-       // } else {
-        //    pantryIngredient.increaseQuantity(i.getQuantity());
-       // }
         removeFromShoppingList(i);
     }
 
     private void removeFromPantry(Ingredient i) {
         Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
+        double quantityOfIngredientRequiredForWeek = quantityOfIngredientRequiredForWeek(i);
         if (pantryIngredient.getQuantity() > i.getQuantity()) {
             pantryIngredient.decreaseQuantity(i.getQuantity());
+            if (pantryIngredient.getQuantity() < quantityOfIngredientRequiredForWeek) {
+                addToShoppingList(i);
+            }
         } else {
             pantry.removeIngredient(pantryIngredient);
+            if (quantityOfIngredientRequiredForWeek > 0) {
+                addToShoppingList(i);
+            }
         }
-        addToShoppingList(i);
     }
 
     private void removeFromShoppingList(Ingredient i) {
         Ingredient shoppingListIngredient = shoppingList.getSpecificIngredient(i);
-        if (shoppingListIngredient != null) {
+        if (shoppingList.contains(i)) {
             if (shoppingListIngredient.getQuantity() > i.getQuantity()) {
                 shoppingListIngredient.decreaseQuantity(i.getQuantity());
             } else {
                 shoppingList.removeIngredient(shoppingListIngredient);
             }
         }
+    }
+
+    private double quantityOfIngredientRequiredForWeek(Ingredient inputIngredient) {
+        double quantity = 0;
+        for (Meal m: mealsForTheWeek) {
+            for (Ingredient mealIngredient: m.getIngredients()) {
+                if (mealIngredient.getName().equals(inputIngredient.getName())) {
+                    quantity += mealIngredient.getQuantity();
+                }
+            }
+        }
+        return quantity;
     }
 
 

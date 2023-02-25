@@ -41,4 +41,9 @@ public class Meal extends IngredientList {
     public int getIngredientListSize() {
         return super.getIngredientListSize();
     }
+
+    @Override
+    public List<Ingredient> getIngredients() {
+        return super.getIngredients();
+    }
 }

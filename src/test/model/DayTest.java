@@ -1,4 +1,4 @@
-package model.test;
+package model;
 import model.Meal;
 import model.Day;
 import org.junit.jupiter.api.BeforeEach;
