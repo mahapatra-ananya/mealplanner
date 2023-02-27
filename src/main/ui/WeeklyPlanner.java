@@ -166,22 +166,6 @@ public class WeeklyPlanner {
     // EFFECTS: sets the type of the meal according to the input if valid
     //          otherwise, requests user to enter valid input
     private void doSettingType(Meal m, String mealType) {
-        /*Boolean loop = true;
-        String returnValue = "";
-        while (loop) {
-            if (s.equals("b")) {
-                returnValue = "Breakfast";
-                loop = false;
-            } else if (s.equals("l")) {
-                returnValue = "Lunch";
-                loop = false;
-            } else if (s.equals("d")) {
-                returnValue = "Dinner";
-                loop = false;
-            } else if (s.equals("s")) {
-                returnValue = "Snack";
-                loop = false;
-            } */
         while (!m.setValidType(mealType)) {
             System.out.println("Please type either b, l, d or s.");
             mealType = input.nextLine();
@@ -279,45 +263,23 @@ public class WeeklyPlanner {
         }
     }
 
-    // EFFECTS: returns the total quantity of the given ingredient that is required for that week's planned meals
-    /*private double quantityOfIngredientRequiredForWeek(Ingredient inputIngredient) {
-        double quantity = 0;
-        for (Meal m : mealsForTheWeek) {
-            for (Ingredient mealIngredient : m.getIngredients()) {
-                if (mealIngredient.getName().equals(inputIngredient.getName())) {
-                    quantity += mealIngredient.getQuantity();
-                }
-            }
-        }
-        return quantity;
-    } */
-
-    private void addToShoppingList(Ingredient i) {
-        Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
-        Ingredient shoppingListIngredient = shoppingList.getSpecificIngredient(i);
-        double quantityOfIngredientRequiredForWeek = mealsForTheWeek.quantityOfIngredientRequiredForWeek(i);
-        if (!pantry.contains(i)) {
-            Ingredient ingredientToAdd = new Ingredient(i.getName(), quantityOfIngredientRequiredForWeek);
-            shoppingList.addIngredient(ingredientToAdd);
-        } else if (pantryIngredient.getQuantity() < quantityOfIngredientRequiredForWeek) {
-            if (!shoppingList.contains(i)) {
-                i.decreaseQuantity(pantryIngredient.getQuantity());
-                shoppingList.addIngredient(i);
-            } else {
-                shoppingListIngredient.increaseQuantity(
-                        quantityOfIngredientRequiredForWeek
-                                - pantryIngredient.getQuantity()
-                                - shoppingListIngredient.getQuantity());
-            }
-        }
-    }
-
+    // MODIFIES: pantry
+    // EFFECTS: adds the given ingredient to the pantry, or increases its quantity if it already exists in pantry
+    //          and removes the ingredient from the shopping list
     private void addToPantry(Ingredient i) {
         pantry.addIngredient(i);
         removeFromShoppingList(i);
     }
 
     // REQUIRES: the given ingredient must exist in the pantry
+    // MODIFIES: pantry, shoppingList
+    // EFFECTS: if the quantity of the ingredient in the pantry is more than the quantity to be removed:
+    //              decreases the quantity of the ingredient in the pantry accordingly
+    //              then, if the quantity of the ingredient in the pantry is less than the required amount for the week:
+    //                  adds as much of the ingredient to the shopping list so that the week's
+    //                  requirement is met by shopping list and pantry
+    //          otherwise, removes the entire ingredient from the pantry, and adds required amount of it for the week
+    //          to the shopping list
     private void removeFromPantry(Ingredient i) {
         Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
         double quantityOfIngredientRequiredForWeek = mealsForTheWeek.quantityOfIngredientRequiredForWeek(i);
@@ -328,12 +290,54 @@ public class WeeklyPlanner {
             }
         } else {
             pantry.removeIngredient(pantryIngredient);
-            if (quantityOfIngredientRequiredForWeek > 0) {
-                addToShoppingList(i);
+            addToShoppingList(i);
+        }
+    }
+
+    // MODIFIES: shoppingList
+    // EFFECTS: if the given ingredient is not in the pantry:
+    //              if it is not in the shopping list:
+    //                  adds as much of the ingredient to the shopping list as required for the week
+    //              otherwise, increases the quantity of the ingredient in the shopping list so that the
+    //              week's requirement is met
+    //          if the quantity of the ingredient in the pantry is less than the required amount for the week:
+    //              if the ingredient is not in the shopping list:
+    //                  adds as much of the ingredient to the shopping list so that the week's
+    //                  requirement is met by shopping list and pantry
+    //              otherwise, increases the quantity of the ingredient in the shopping list so that the
+    //              week's requirement is met by shopping list and pantry
+    private void addToShoppingList(Ingredient i) {
+        Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
+        Ingredient shoppingListIngredient = shoppingList.getSpecificIngredient(i);
+        double quantityOfIngredientRequiredForWeek = mealsForTheWeek.quantityOfIngredientRequiredForWeek(i);
+        if (!pantry.contains(i)) {
+            if (!shoppingList.contains(i)) {
+                Ingredient ingredientToAdd = new Ingredient(i.getName(), quantityOfIngredientRequiredForWeek);
+                shoppingList.addIngredient(ingredientToAdd);
+            } else {
+                shoppingListIngredient.increaseQuantity(
+                        quantityOfIngredientRequiredForWeek - shoppingListIngredient.getQuantity());
+            }
+        } else if (pantryIngredient.getQuantity() < quantityOfIngredientRequiredForWeek) {
+            if (!shoppingList.contains(i)) {
+                Ingredient ingredientToAdd = new Ingredient(i.getName(),
+                        (quantityOfIngredientRequiredForWeek - pantryIngredient.getQuantity()));
+                shoppingList.addIngredient(ingredientToAdd);
+            } else {
+                shoppingListIngredient.increaseQuantity(
+                        quantityOfIngredientRequiredForWeek
+                                - pantryIngredient.getQuantity()
+                                - shoppingListIngredient.getQuantity());
             }
         }
     }
 
+    // MODIFIES: shoppingList
+    // EFFECTS: if the ingredient is in the shopping list:
+    //              if its quantity in the shopping list is greater than the given quantity:
+    //                  decreases the quantity of the ingredient in the shopping list accordingly
+    //              otherwise, removes the ingredient from the shopping list entirely
+    //          otherwise, does nothing
     private void removeFromShoppingList(Ingredient i) {
         Ingredient shoppingListIngredient = shoppingList.getSpecificIngredient(i);
         if (shoppingList.contains(i)) {

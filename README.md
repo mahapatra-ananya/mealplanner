@@ -18,7 +18,7 @@ and reduce the mental task of having to create a shopping list.
 
 These are the user features I want to incorporate in my application:
 
-- As a user, I want to be able to add a meal to my weekly planner
+- As a user, I want to be able to add meals to my weekly planner
 - As a user, I want to be able to add and delete items from my pantry as I use
 them in real life
 - As a user, I want to be able to select a meal and see the ingredients 
