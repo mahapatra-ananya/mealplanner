@@ -1,6 +1,4 @@
 package model;
-import model.Meal;
-import model.Day;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,11 +17,14 @@ public class DayTest {
         m1 = new Meal("m1");
         m2 = new Meal("m2");
         m3 = new Meal("m3");
+        m1.setType("Breakfast");
+        m2.setType("Snack");
+        m3.setType("Dinner");
     }
 
     @Test
     void testConstructor() {
-        assertEquals("Sunday", day.getDay());
+        assertEquals("Sunday", day.getName());
         assertEquals(0, day.getMeals().size());
     }
 
@@ -45,9 +46,9 @@ public class DayTest {
         //assertEquals("[m1]", day.printMealList());
         day.addMeal(m2);
         day.addMeal(m3);
-        assertEquals("[m1, m2, m3]", day.printMealList());
+        assertEquals("[Breakfast - m1, Snack - m2, Dinner - m3]", day.printableMealList());
         day.addMeal(m1);
-        assertEquals("[m1, m2, m3, m1]", day.printMealList());
+        assertEquals("[Breakfast - m1, Snack - m2, Dinner - m3, Breakfast - m1]", day.printableMealList());
     }
 
 }

@@ -1,7 +1,5 @@
 package model;
 
-import model.Ingredient;
-import model.Pantry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -86,11 +84,11 @@ public class PantryTest {
     @Test
     void testPrintIngredientList() {
         p.addIngredient(i1);
-        assertEquals("The ingredients you already have are: [i1: 7.0]", p.printIngredientList(""));
+        assertEquals("The ingredients you already have are: [i1: 7.0]", p.printableIngredientList(""));
         p.addIngredient(i2);
         p.addIngredient(i3);
         assertEquals("The ingredients you already have are: [i1: 7.0, i2: 1.0, i3: 100.55]",
-                p.printIngredientList(""));
+                p.printableIngredientList(""));
     }
 
     @Test

@@ -5,25 +5,34 @@ public class Ingredient {
     private String name;
     private double quantity;
 
-    // EFFECTS: creates an ingredient with the given name
+    // REQUIRES: quantity is a positive number
+    // EFFECTS: creates an ingredient with the given name and quantity
     public Ingredient(String name, double quantity) {
         this.name = name;
         this.quantity = quantity;
     }
 
+    // EFFECTS: returns the name of the ingredient
     public String getName() {
         return this.name;
     }
 
+    // EFFECTS: returns the quantity of the ingredient
     public double getQuantity() {
         return this.quantity;
     }
 
-    public void increaseQuantity(double quantity) {
-        this.quantity += quantity;
+    // REQUIRES: amount is not a negative number
+    // MODIFIES: this
+    // EFFECTS: increases the quantity of the ingredient by the given amount
+    public void increaseQuantity(double amount) {
+        this.quantity += amount;
     }
 
-    public void decreaseQuantity(double quantity) {
-        this.quantity -= quantity;
+    // REQUIRES: the final quantity of the ingredient must be a positive number
+    // MODIFIES: this
+    // EFFECTS: decreases the quantity of the ingredient by the given amount
+    public void decreaseQuantity(double amount) {
+        this.quantity -= amount;
     }
 }

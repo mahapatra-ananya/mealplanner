@@ -1,6 +1,4 @@
 package model;
-import model.Ingredient;
-import model.ShoppingList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -85,11 +83,11 @@ public class ShoppingListTest {
     @Test
     void testPrintIngredientList() {
         s.addIngredient(i1);
-        assertEquals("Your shopping list is: [i1: 7.0]", s.printIngredientList(""));
+        assertEquals("Your shopping list is: [i1: 7.0]", s.printableIngredientList(""));
         s.addIngredient(i2);
         s.addIngredient(i3);
         assertEquals("Your shopping list is: [i1: 7.0, i2: 1.0, i3: 100.55]",
-                s.printIngredientList(""));
+                s.printableIngredientList(""));
     }
 
     @Test

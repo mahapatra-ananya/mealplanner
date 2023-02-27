@@ -1,15 +1,15 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Pantry extends IngredientList {
 
+    // EFFECTS: creates a new pantry with an empty ingredient list
     public Pantry() {
         this.ingredients = new ArrayList<>();
     }
 
-    @Override
+   /* @Override
     public Boolean contains(Ingredient i) {
         return super.contains(i);
     }
@@ -22,7 +22,7 @@ public class Pantry extends IngredientList {
     @Override
     public void addIngredient(Ingredient inputIngredient) {
         super.addIngredient(inputIngredient);
-    }
+    } */
 
     @Override
     public void removeIngredient(Ingredient inputIngredient) {
@@ -30,13 +30,15 @@ public class Pantry extends IngredientList {
     }
 
     @Override
-    public String printIngredientList(String s) {
+    // EFFECTS: inherited from superclass IngredientList
+    //          formatted to be printed in UI specifically for a pantry
+    public String printableIngredientList(String s) {
         s = "The ingredients you already have are: ";
-        return super.printIngredientList(s);
+        return super.printableIngredientList(s);
     }
 
-    @Override
+   /* @Override
     public int getIngredientListSize() {
         return super.getIngredientListSize();
-    }
+    }  */
 }

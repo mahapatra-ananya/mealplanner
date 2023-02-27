@@ -199,21 +199,21 @@ public class WeeklyPlanner {
     }
 
     private void doViewingPantry() {
-        System.out.println(pantry.printIngredientList("The ingredients you already have are: "));
+        System.out.println(pantry.printableIngredientList("The ingredients you already have are: "));
     }
 
     private void doViewingShoppingList() {
-        System.out.println(shoppingList.printIngredientList("Your shopping list is for the week is: "));
+        System.out.println(shoppingList.printableIngredientList("Your shopping list is for the week is: "));
     }
 
     private void doViewingWeeklyPlanner() {
-        System.out.println("Sunday: " + sunday.printMealList());
-        System.out.println("Monday: " + monday.printMealList());
-        System.out.println("Tuesday: " + tuesday.printMealList());
-        System.out.println("Wednesday: " + wednesday.printMealList());
-        System.out.println("Thursday: " + thursday.printMealList());
-        System.out.println("Friday: " + friday.printMealList());
-        System.out.println("Saturday: " + saturday.printMealList());
+        System.out.println("Sunday: " + sunday.printableMealList());
+        System.out.println("Monday: " + monday.printableMealList());
+        System.out.println("Tuesday: " + tuesday.printableMealList());
+        System.out.println("Wednesday: " + wednesday.printableMealList());
+        System.out.println("Thursday: " + thursday.printableMealList());
+        System.out.println("Friday: " + friday.printableMealList());
+        System.out.println("Saturday: " + saturday.printableMealList());
 
         Boolean loop = true;
         while (loop) {
@@ -224,7 +224,7 @@ public class WeeklyPlanner {
             for (Meal m: mealsForTheWeek) {
                 if (m.getName().equals(choice)) {
                     System.out.println(m.getName());
-                    System.out.println(m.printIngredientList("The ingredients for this meal are: "));
+                    System.out.println(m.printableIngredientList("The ingredients for this meal are: "));
                 }
             }
             loop = false;
