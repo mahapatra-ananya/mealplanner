@@ -29,11 +29,23 @@ public class MealTest {
     }
 
     @Test
-    void testSetType() {
-        testMeal.setType("lunch");
-        assertEquals("lunch", testMeal.getType());
-        testMeal.setType("halloween candy");
-        assertEquals("halloween candy", testMeal.getType());
+    void testSetTypeWithValidInput() {
+        assertTrue(testMeal.setValidType("l"));
+        assertEquals("Lunch", testMeal.getType());
+        assertTrue(testMeal.setValidType("b"));
+        assertEquals("Breakfast", testMeal.getType());
+        assertTrue(testMeal.setValidType("d"));
+        assertEquals("Dinner", testMeal.getType());
+        assertTrue(testMeal.setValidType("s"));
+        assertEquals("Snack", testMeal.getType());
+    }
+
+    @Test
+    void testSetTypeWithInvalidInput() {
+        assertFalse(testMeal.setValidType("halloween candy"));
+        assertEquals(null, testMeal.getType());
+        assertFalse(testMeal.setValidType("A"));
+        assertEquals(null, testMeal.getType());
     }
 
     @Test

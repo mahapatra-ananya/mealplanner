@@ -2,8 +2,6 @@ package ui;
 
 import model.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 // Structure of UI class and runWeeklyPlanner method referenced from TellerApp
@@ -18,7 +16,7 @@ public class WeeklyPlanner {
     private Pantry pantry;
     private ShoppingList shoppingList;
 
-    private List<Meal> mealsForTheWeek;
+    private MealList mealsForTheWeek;
 
     private Scanner input;
 
@@ -35,7 +33,7 @@ public class WeeklyPlanner {
         saturday = new Day("Saturday");
         pantry = new Pantry();
         shoppingList = new ShoppingList();
-        mealsForTheWeek = new ArrayList<>();
+        mealsForTheWeek = new MealList();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         runWeeklyPlanner();
@@ -114,8 +112,8 @@ public class WeeklyPlanner {
                     || day.equals("fri") || day.equals("sat")) {
                 Meal m = whichMealToAdd();
                 addMealToSpecificDay(day, m);
-                mealsForTheWeek.add(m);
-                for (Ingredient i: m.getIngredients()) {
+                mealsForTheWeek.addMeal(m);
+                for (Ingredient i : m.getIngredients()) {
                     addToShoppingList(i);
                 }
                 loop = false;
@@ -159,7 +157,7 @@ public class WeeklyPlanner {
         System.out.println("s: Snack");
         String mealType = input.nextLine();
         mealType = mealType.toLowerCase();
-        meal.setType(doSettingType(mealType));
+        doSettingType(meal, mealType);
         addIngredientsToMeal(meal);
         return meal;
     }
@@ -167,8 +165,8 @@ public class WeeklyPlanner {
     // MODIFIES: Meal
     // EFFECTS: sets the type of the meal according to the input if valid
     //          otherwise, requests user to enter valid input
-    private String doSettingType(String s) {
-        Boolean loop = true;
+    private void doSettingType(Meal m, String mealType) {
+        /*Boolean loop = true;
         String returnValue = "";
         while (loop) {
             if (s.equals("b")) {
@@ -183,12 +181,12 @@ public class WeeklyPlanner {
             } else if (s.equals("s")) {
                 returnValue = "Snack";
                 loop = false;
-            } else {
-                System.out.println("Please type either b, l, d or s.");
-                s = input.nextLine();
-            }
+            } */
+        while (!m.setValidType(mealType)) {
+            System.out.println("Please type either b, l, d or s.");
+            mealType = input.nextLine();
+            mealType = mealType.toLowerCase();
         }
-        return returnValue;
     }
 
     // MODIFIES: Meal
@@ -207,7 +205,7 @@ public class WeeklyPlanner {
             if (addMore.equals("y")) {
                 Ingredient moreIngredient = createIngredient();
                 m.addIngredient(moreIngredient);
-               // addToShoppingList(moreIngredient);
+                // addToShoppingList(moreIngredient);
             } else {
                 loop = false;
             }
@@ -271,7 +269,7 @@ public class WeeklyPlanner {
                     + "exactly as it appears in the planner, or type anything else to return to the main menu.");
             String choice = input.nextLine();
             choice.toLowerCase();
-            for (Meal m: mealsForTheWeek) {
+            for (Meal m : mealsForTheWeek.getMeals()) {
                 if (m.getName().equals(choice)) {
                     System.out.println(m.getName());
                     System.out.println(m.printableIngredientList("The ingredients for this meal are: "));
@@ -282,22 +280,22 @@ public class WeeklyPlanner {
     }
 
     // EFFECTS: returns the total quantity of the given ingredient that is required for that week's planned meals
-    private double quantityOfIngredientRequiredForWeek(Ingredient inputIngredient) {
+    /*private double quantityOfIngredientRequiredForWeek(Ingredient inputIngredient) {
         double quantity = 0;
-        for (Meal m: mealsForTheWeek) {
-            for (Ingredient mealIngredient: m.getIngredients()) {
+        for (Meal m : mealsForTheWeek) {
+            for (Ingredient mealIngredient : m.getIngredients()) {
                 if (mealIngredient.getName().equals(inputIngredient.getName())) {
                     quantity += mealIngredient.getQuantity();
                 }
             }
         }
         return quantity;
-    }
+    } */
 
     private void addToShoppingList(Ingredient i) {
         Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
         Ingredient shoppingListIngredient = shoppingList.getSpecificIngredient(i);
-        double quantityOfIngredientRequiredForWeek = quantityOfIngredientRequiredForWeek(i);
+        double quantityOfIngredientRequiredForWeek = mealsForTheWeek.quantityOfIngredientRequiredForWeek(i);
         if (!pantry.contains(i)) {
             Ingredient ingredientToAdd = new Ingredient(i.getName(), quantityOfIngredientRequiredForWeek);
             shoppingList.addIngredient(ingredientToAdd);
@@ -322,7 +320,7 @@ public class WeeklyPlanner {
     // REQUIRES: the given ingredient must exist in the pantry
     private void removeFromPantry(Ingredient i) {
         Ingredient pantryIngredient = pantry.getSpecificIngredient(i);
-        double quantityOfIngredientRequiredForWeek = quantityOfIngredientRequiredForWeek(i);
+        double quantityOfIngredientRequiredForWeek = mealsForTheWeek.quantityOfIngredientRequiredForWeek(i);
         if (pantryIngredient.getQuantity() > i.getQuantity()) {
             pantryIngredient.decreaseQuantity(i.getQuantity());
             if (pantryIngredient.getQuantity() < quantityOfIngredientRequiredForWeek) {
@@ -346,8 +344,6 @@ public class WeeklyPlanner {
             }
         }
     }
-
-
 
 
 }

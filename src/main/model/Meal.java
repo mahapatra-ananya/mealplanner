@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Meal extends IngredientList {
 
@@ -15,9 +14,24 @@ public class Meal extends IngredientList {
     }
 
     // MODIFIES: this
-    // EFFECTS: sets the meal's type as the inputted type
-    public void setType(String type) {
-        this.type = type;
+    // EFFECTS: sets the meal's type according to inputted type if valid
+    //          and returns whether the input is valid or not
+    public Boolean setValidType(String s) {
+        Boolean validType = false;
+        if (s.equals("b")) {
+            this.type = "Breakfast";
+            validType = true;
+        } else if (s.equals("l")) {
+            this.type = "Lunch";
+            validType = true;
+        } else if (s.equals("d")) {
+            this.type = "Dinner";
+            validType = true;
+        } else if (s.equals("s")) {
+            this.type = "Snack";
+            validType = true;
+        }
+        return validType;
     }
 
    /* @Override

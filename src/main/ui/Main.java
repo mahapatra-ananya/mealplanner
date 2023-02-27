@@ -7,7 +7,3 @@ public class Main {
         new WeeklyPlanner();
     }
 }
-
-       // Day day = new Day();
-        //day.showPantry();
-

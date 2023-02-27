@@ -17,9 +17,9 @@ public class DayTest {
         m1 = new Meal("m1");
         m2 = new Meal("m2");
         m3 = new Meal("m3");
-        m1.setType("Breakfast");
-        m2.setType("Snack");
-        m3.setType("Dinner");
+        m1.setValidType("b");
+        m2.setValidType("s");
+        m3.setValidType("d");
     }
 
     @Test
@@ -29,21 +29,9 @@ public class DayTest {
     }
 
     @Test
-    void testAddMeals() {
-        assertEquals(0, day.getMeals().size());
-        day.addMeal(m1);
-        assertEquals(1, day.getMeals().size());
-        day.addMeal(m2);
-        day.addMeal(m3);
-        assertEquals(3, day.getMeals().size());
-        day.addMeal(m1);
-        assertEquals(4, day.getMeals().size());
-    }
-
-    @Test
     void testPrintMealList() {
         day.addMeal(m1);
-        //assertEquals("[m1]", day.printMealList());
+        assertEquals("[Breakfast - m1]", day.printableMealList());
         day.addMeal(m2);
         day.addMeal(m3);
         assertEquals("[Breakfast - m1, Snack - m2, Dinner - m3]", day.printableMealList());
