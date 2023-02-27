@@ -196,6 +196,7 @@ public class WeeklyPlanner {
         }
     }
 
+    // REQUIRES: the quantity entered must be a positive number
     // EFFECTS: creates an Ingredient object according to the user inputted name and quantity
     private Ingredient createIngredient() {
         System.out.println("Please enter the name of the ingredient you want to add or remove");
