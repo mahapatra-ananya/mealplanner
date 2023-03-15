@@ -27,3 +27,7 @@ required to make it
 (eg - breakfast, lunch, dinner) for each day of the week 
 - As a user, I want to be able to view an automatically generated shopping
 list of ingredients I need for the week but haven't yet bought
+- As a user, I want to have the option to save my weekly planner and pantry to file 
+if I want to do so
+- As a user, I want to have the option to reload my weekly planner and pantry 
+from file and resume exactly where I left off at an earlier time if I want to do so

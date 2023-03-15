@@ -1,6 +1,9 @@
 package model;
 
-public class Ingredient {
+import org.json.JSONObject;
+import persistence.Writable;
+
+public class Ingredient implements Writable {
 
     private String name;
     private double quantity;
@@ -34,5 +37,13 @@ public class Ingredient {
     // EFFECTS: decreases the quantity of the ingredient by the given amount
     public void decreaseQuantity(double amount) {
         this.quantity -= amount;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("quantity", quantity);
+        return json;
     }
 }

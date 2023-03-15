@@ -1,6 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+// JSONSerializationDemo application used as reference
 
 public class Meal extends IngredientList {
 
@@ -34,11 +38,12 @@ public class Meal extends IngredientList {
         return validType;
     }
 
-   /* @Override
-    // MODIFIES and EFFECTS: inherited from superclass IngredientList
-    public void addIngredient(Ingredient inputIngredient) {
-        super.addIngredient(inputIngredient);
-    } */
+    // MODIFIES: this
+    // EFFECTS: sets type as the given string
+    public void setTypeForJson(String s) {
+        this.type = s;
+    }
+
 
     @Override
     // EFFECTS: inherited from superclass IngredientList
@@ -58,13 +63,13 @@ public class Meal extends IngredientList {
         return type;
     }
 
-    /*@Override
-    public int getIngredientListSize() {
-        return super.getIngredientListSize();
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("ingredients", ingredientsToJson());
+        json.put("type", type);
+        return json;
     }
 
-    @Override
-    public List<Ingredient> getIngredients() {
-        return super.getIngredients();
-    } */
 }

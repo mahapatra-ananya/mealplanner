@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealList {
+public class MealList implements Writable {
 
     protected List<Meal> meals;
 
@@ -34,5 +38,23 @@ public class MealList {
     // EFFECTS: adds the given meal to the meal list
     public void addMeal(Meal m) {
         this.meals.add(m);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("meals", mealsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns meals in this meal list as a JSON array
+    protected JSONArray mealsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Meal m : meals) {
+            jsonArray.put(m.toJson());
+        }
+
+        return jsonArray;
     }
 }

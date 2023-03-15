@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class IngredientList {
+public abstract class IngredientList implements Writable {
 
     protected List<Ingredient> ingredients;
 
@@ -67,7 +71,6 @@ public abstract class IngredientList {
         return false;
     }
 
-
     // EFFECTS: returns a list of the ingredients formatted to be printed in UI
     protected String printableIngredientList(String s) {
         List statement = new ArrayList<>();
@@ -76,6 +79,24 @@ public abstract class IngredientList {
             statement.add(ingredientWithQuantity);
         }
         return s + statement;
+    }
+
+    // EFFECTS: returns ingredients in this meal as a JSON array
+    protected JSONArray ingredientsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Ingredient i : ingredients) {
+            jsonArray.put(i.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("ingredients", ingredientsToJson());
+        return json;
     }
 
 }

@@ -1,28 +1,19 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
-public class Pantry extends IngredientList {
+// JSONSerializationDemo application used as reference
+
+public class Pantry extends IngredientList implements Writable {
 
     // EFFECTS: creates a new pantry with an empty ingredient list
     public Pantry() {
         this.ingredients = new ArrayList<>();
     }
-
-   /* @Override
-    public Boolean contains(Ingredient i) {
-        return super.contains(i);
-    }
-
-    @Override
-    public Ingredient getSpecificIngredient(Ingredient i) {
-        return super.getSpecificIngredient(i);
-    }
-
-    @Override
-    public void addIngredient(Ingredient inputIngredient) {
-        super.addIngredient(inputIngredient);
-    } */
 
     @Override
     public void removeIngredient(Ingredient inputIngredient) {
@@ -37,8 +28,4 @@ public class Pantry extends IngredientList {
         return super.printableIngredientList(s);
     }
 
-   /* @Override
-    public int getIngredientListSize() {
-        return super.getIngredientListSize();
-    }  */
 }

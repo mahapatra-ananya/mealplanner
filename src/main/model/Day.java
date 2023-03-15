@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,14 @@ public class Day extends MealList {
             returnStatement.add(m.getType() + " - " + m.getName());
         }
         return returnStatement.toString();
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("meals", mealsToJson());
+        return json;
     }
 
 }
