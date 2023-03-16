@@ -1,11 +1,25 @@
 package ui;
 
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 // Structure of UI class and runWeeklyPlanner method referenced from TellerApp
 public class WeeklyPlanner {
+
+    private static final String JSON_PANTRY_FILE = "./data/pantry.json";
+    private static final String JSON_SHOPPING_LIST_FILE = "./data/shopping_list.json";
+    private static final String JSON_SUNDAY_FILE = "./data/sunday.json";
+    private static final String JSON_MONDAY_FILE = "./data/monday.json";
+    private static final String JSON_TUESDAY_FILE = "./data/tuesday.json";
+    private static final String JSON_WEDNESDAY_FILE = "./data/wednesday.json";
+    private static final String JSON_THURSDAY_FILE = "./data/thursday.json";
+    private static final String JSON_FRIDAY_FILE = "./data/friday.json";
+    private static final String JSON_SATURDAY_FILE = "./data/saturday.json";
     private Day sunday;
     private Day monday;
     private Day tuesday;
@@ -15,15 +29,31 @@ public class WeeklyPlanner {
     private Day saturday;
     private Pantry pantry;
     private ShoppingList shoppingList;
-
     private MealList mealsForTheWeek;
-
     private Scanner input;
+    private JsonWriter jsonPantryWriter;
+    private JsonReader jsonPantryReader;
+    private JsonWriter jsonShoppingListWriter;
+    private JsonReader jsonShoppingListReader;
+    private JsonWriter jsonSundayWriter;
+    private JsonReader jsonSundayReader;
+    private JsonWriter jsonMondayWriter;
+    private JsonReader jsonMondayReader;
+    private JsonWriter jsonTuesdayWriter;
+    private JsonReader jsonTuesdayReader;
+    private JsonWriter jsonWednesdayWriter;
+    private JsonReader jsonWednesdayReader;
+    private JsonWriter jsonThursdayWriter;
+    private JsonReader jsonThursdayReader;
+    private JsonWriter jsonFridayWriter;
+    private JsonReader jsonFridayReader;
+    private JsonWriter jsonSaturdayWriter;
+    private JsonReader jsonSaturdayReader;
 
     // EFFECTS: creates a new WeeklyPlanner with all the days of the week, a pantry, a shopping list, an empty list of
     //          meals for the week, and a scanner
     //          then runs the primary UI method
-    public WeeklyPlanner() {
+    public WeeklyPlanner() throws FileNotFoundException {
         sunday = new Day("Sunday");
         monday = new Day("Monday");
         tuesday = new Day("Tuesday");
@@ -36,7 +66,30 @@ public class WeeklyPlanner {
         mealsForTheWeek = new MealList();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        createReadersAndWriters();
         runWeeklyPlanner();
+    }
+
+    // EFFECTS: instantiates all the JSON readers and writers
+    private void createReadersAndWriters() {
+        jsonPantryWriter = new JsonWriter(JSON_PANTRY_FILE);
+        jsonPantryReader = new JsonReader(JSON_PANTRY_FILE);
+        jsonShoppingListWriter = new JsonWriter(JSON_SHOPPING_LIST_FILE);
+        jsonShoppingListReader = new JsonReader(JSON_SHOPPING_LIST_FILE);
+        jsonSundayWriter = new JsonWriter(JSON_SUNDAY_FILE);
+        jsonSundayReader = new JsonReader(JSON_SUNDAY_FILE);
+        jsonMondayWriter = new JsonWriter(JSON_MONDAY_FILE);
+        jsonMondayReader = new JsonReader(JSON_MONDAY_FILE);
+        jsonTuesdayWriter = new JsonWriter(JSON_TUESDAY_FILE);
+        jsonTuesdayReader = new JsonReader(JSON_TUESDAY_FILE);
+        jsonWednesdayWriter = new JsonWriter(JSON_WEDNESDAY_FILE);
+        jsonWednesdayReader = new JsonReader(JSON_WEDNESDAY_FILE);
+        jsonThursdayWriter = new JsonWriter(JSON_THURSDAY_FILE);
+        jsonThursdayReader = new JsonReader(JSON_THURSDAY_FILE);
+        jsonFridayWriter = new JsonWriter(JSON_FRIDAY_FILE);
+        jsonFridayReader = new JsonReader(JSON_FRIDAY_FILE);
+        jsonSaturdayWriter = new JsonWriter(JSON_SATURDAY_FILE);
+        jsonSaturdayReader = new JsonReader(JSON_SATURDAY_FILE);
     }
 
     // EFFECTS: takes user input and keeps running the program
@@ -50,7 +103,7 @@ public class WeeklyPlanner {
             whatToDo = input.nextLine();
             whatToDo = whatToDo.toLowerCase();
 
-            if (whatToDo.equals("7")) {
+            if (whatToDo.equals("9")) {
                 loop = false;
             } else {
                 doThing(whatToDo);
@@ -69,11 +122,13 @@ public class WeeklyPlanner {
         System.out.println("\t4: View your pantry");
         System.out.println("\t5: View your shopping list");
         System.out.println("\t6: View your weekly meal planner");
-        System.out.println("\t7: Quit application");
+        System.out.println("\t7: Save your weekly planner, pantry and shopping list to file");
+        System.out.println("\t8: Load your weekly planner, pantry and shopping list from file");
+        System.out.println("\t9: Quit application");
     }
 
 
-    // EFFECTS: only runs if user inputs anything other than "7"
+    // EFFECTS: only runs if user inputs anything other than "9"
     //          if the user inputs a number from 1-6, executes the respective required function
     //          otherwise, requests the user to only enter valid inputs
     private void doThing(String whatToDo) {
@@ -89,8 +144,12 @@ public class WeeklyPlanner {
             doViewingShoppingList();
         } else if (whatToDo.equals("6")) {
             doViewingWeeklyPlanner();
+        } else if (whatToDo.equals("7")) {
+            doSavingToFile();
+        } else if (whatToDo.equals("8")) {
+            doLoadingFromFile();
         } else {
-            System.out.println("Please only type a number between 1-7");
+            System.out.println("Please only type a number between 1-9");
         }
     }
 
@@ -347,6 +406,176 @@ public class WeeklyPlanner {
             } else {
                 shoppingList.removeIngredient(shoppingListIngredient);
             }
+        }
+    }
+
+    // EFFECTS: allows user to choose to save pantry, shopping list and weekly planner to file
+    private void doSavingToFile() {
+        System.out.println("What would you like to save? Type 'p' for pantry, 's' for the shopping list, and 'w' for"
+                + "the full weekly planner.");
+        Boolean loop = true;
+        while (loop) {
+            String choice = input.nextLine();
+            choice.toLowerCase();
+            if (choice.equals("s")) {
+                saveShoppingListToFile();
+                loop = false;
+            } else if (choice.equals("p")) {
+                savePantryToFile();
+                loop = false;
+            } else if (choice.equals("w")) {
+                saveWeeklyPlannerToFile();
+                loop = false;
+            }
+        }
+    }
+
+    // EFFECTS: saves pantry to file
+    private void savePantryToFile() {
+        try {
+            jsonPantryWriter.open();
+            jsonPantryWriter.write(pantry);
+            jsonPantryWriter.close();
+            System.out.println("Saved pantry to " + JSON_PANTRY_FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_PANTRY_FILE);
+        }
+    }
+
+    // EFFECTS: saves shopping list to file
+    private void saveShoppingListToFile() {
+        try {
+            jsonShoppingListWriter.open();
+            jsonShoppingListWriter.write(shoppingList);
+            jsonShoppingListWriter.close();
+            System.out.println("Saved shopping list to " + JSON_SHOPPING_LIST_FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_SHOPPING_LIST_FILE);
+        }
+    }
+
+    // EFFECTS: saves weekly planner to file
+    private void saveWeeklyPlannerToFile() {
+        openDayWriters();
+        writeDaysToFile();
+        closeDayWriters();
+        System.out.println("Saved weekly planner to file.");
+    }
+
+    // EFFECTS: opens the JSON writers for each day
+    private void openDayWriters() {
+        try {
+            jsonSundayWriter.open();
+            jsonMondayWriter.open();
+            jsonTuesdayWriter.open();
+            jsonWednesdayWriter.open();
+            jsonThursdayWriter.open();
+            jsonFridayWriter.open();
+            jsonSaturdayWriter.open();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file.");
+        }
+    }
+
+    // EFFECTS: writes to the JSON writers for each day
+    private void writeDaysToFile() {
+        jsonSundayWriter.write(sunday);
+        jsonMondayWriter.write(monday);
+        jsonTuesdayWriter.write(tuesday);
+        jsonWednesdayWriter.write(wednesday);
+        jsonThursdayWriter.write(thursday);
+        jsonFridayWriter.write(friday);
+        jsonSaturdayWriter.write(saturday);
+    }
+
+    // EFFECTS: closes the JSON writers for each day
+    private void closeDayWriters() {
+        jsonSundayWriter.close();
+        jsonMondayWriter.close();
+        jsonTuesdayWriter.close();
+        jsonWednesdayWriter.close();
+        jsonThursdayWriter.close();
+        jsonFridayWriter.close();
+        jsonSaturdayWriter.close();
+    }
+
+    // EFFECTS: allows users to choose to load pantry, shopping list and weekly planner from file
+    private void doLoadingFromFile() {
+        System.out.println("What would you like to load? Type 'p' for pantry, 's' for the shopping list, and 'w' for"
+                + " the full weekly planner.");
+        Boolean loop = true;
+        while (loop) {
+            String choice = input.nextLine();
+            choice.toLowerCase();
+            if (choice.equals("s")) {
+                loadShoppingListFromFile();
+                loop = false;
+            } else if (choice.equals("p")) {
+                loadPantryFromFile();
+                loop = false;
+            } else if (choice.equals("w")) {
+                loadWeeklyPlannerFromFile();
+                loop = false;
+            }
+        }
+    }
+
+    // EFFECTS: loads pantry from file
+    private void loadPantryFromFile() {
+        try {
+            pantry = jsonPantryReader.readPantry();
+            System.out.println("Loaded pantry from " + JSON_PANTRY_FILE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_PANTRY_FILE);
+        }
+    }
+
+    // EFFECTS: loads shopping list from file
+    private void loadShoppingListFromFile() {
+        try {
+            shoppingList = jsonShoppingListReader.readShoppingList();
+            System.out.println("Loaded shopping list from " + JSON_SHOPPING_LIST_FILE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_SHOPPING_LIST_FILE);
+        }
+    }
+
+    // EFFECTS: loads weekly planner from file
+    private void loadWeeklyPlannerFromFile() {
+        try {
+            sunday = jsonSundayReader.readDay();
+            monday = jsonMondayReader.readDay();
+            tuesday = jsonTuesdayReader.readDay();
+            wednesday = jsonWednesdayReader.readDay();
+            thursday = jsonThursdayReader.readDay();
+            friday = jsonFridayReader.readDay();
+            saturday = jsonSaturdayReader.readDay();
+            addAllMealsToMealsForTheWeekFromFile(sunday, monday, tuesday, wednesday, thursday, friday, saturday);
+            System.out.println("Loaded weekly planner from file.");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file.");
+        }
+    }
+
+    // MODIFIES: mealsForTheWeek
+    // EFFECTS: adds meals from all loaded days of the week to mealsForTheWeek
+    private void addAllMealsToMealsForTheWeekFromFile(Day sun, Day mon, Day tue, Day wed, Day thu, Day fri, Day sat) {
+        mealsForTheWeek = new MealList();
+        addMealToMealsForTheWeekFromFile(sun);
+        addMealToMealsForTheWeekFromFile(mon);
+        addMealToMealsForTheWeekFromFile(tue);
+        addMealToMealsForTheWeekFromFile(wed);
+        addMealToMealsForTheWeekFromFile(thu);
+        addMealToMealsForTheWeekFromFile(fri);
+        addMealToMealsForTheWeekFromFile(sat);
+
+    }
+
+    //  MODIFIES: mealsForTheWeek
+    //  EFFECTS: adds meals from a loaded day of the week to mealsForTheWeek
+    private void addMealToMealsForTheWeekFromFile(Day day) {
+        for (Meal m: day.getMeals()) {
+            mealsForTheWeek.addMeal(m);
         }
     }
 
