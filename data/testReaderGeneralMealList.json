@@ -1,0 +1,23 @@
+{
+  "meals": [
+    {
+      "ingredients": [],
+      "name": "first m",
+      "type": "first t"
+    },
+    {
+      "ingredients": [
+        {
+          "name": "i1",
+          "quantity": 3
+        },
+        {
+          "name": "i2",
+          "quantity": 108.99
+        }
+      ],
+      "name": "second m",
+      "type": "second t"
+    }
+  ]
+}

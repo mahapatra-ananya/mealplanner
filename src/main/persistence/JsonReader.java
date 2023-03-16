@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import model.*;
@@ -22,12 +21,44 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
+    // EFFECTS: reads meal from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Meal read() throws IOException {
+    public Meal readMeal() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseMeal(jsonObject);
+    }
+
+    // EFFECTS: reads pantry from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public Pantry readPantry() throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parsePantry(jsonObject);
+    }
+
+    // EFFECTS: reads shopping list from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public ShoppingList readShoppingList() throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parseShoppingList(jsonObject);
+    }
+
+    // EFFECTS: reads day from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public Day readDay() throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parseDay(jsonObject);
+    }
+
+    // EFFECTS: reads MealList from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public MealList readMealList() throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parseMealList(jsonObject);
     }
 
     // EFFECTS: reads source file as string and returns it

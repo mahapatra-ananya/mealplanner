@@ -1,0 +1,16 @@
+{
+  "ingredients": [
+    {
+      "name": "i1",
+      "quantity": 0
+    },
+    {
+      "name": "i2",
+      "quantity": 35
+    },
+    {
+      "name": "i3",
+      "quantity": 178.5
+    }
+  ]
+}

@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class IngredientList implements Writable {
 
-    protected List<Ingredient> ingredients;
+    protected ArrayList<Ingredient> ingredients;
 
     // cannot be instantiated because abstract
 
@@ -39,7 +39,7 @@ public abstract class IngredientList implements Writable {
 
 
     // EFFECTS: returns all the ingredients in the IngredientList;
-    public List<Ingredient> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return this.ingredients;
     }
 

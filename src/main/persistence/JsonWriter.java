@@ -28,10 +28,10 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of ingredient to file
-    public void write(Ingredient ingredient) {
+    /*public void write(Ingredient ingredient) {
         JSONObject json = ingredient.toJson();
         saveToFile(json.toString(TAB));
-    }
+    }*/
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of meal to file

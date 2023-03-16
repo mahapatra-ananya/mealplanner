@@ -1,0 +1,38 @@
+{
+  "meals": [
+    {
+      "ingredients": [
+        {
+          "name": "i1",
+          "quantity": 0
+        },
+        {
+          "name": "i2",
+          "quantity": 33
+        }
+      ],
+      "name": "m1",
+      "type": "t1"
+    },
+    {
+      "ingredients": [],
+      "name": "m2",
+      "type": "t2"
+    },
+    {
+      "ingredients": [
+        {
+          "name": "i1",
+          "quantity": 3
+        },
+        {
+          "name": "i2",
+          "quantity": 108.99
+        }
+      ],
+      "name": "m3",
+      "type": "t3"
+    }
+  ],
+  "name": "My Day"
+}
