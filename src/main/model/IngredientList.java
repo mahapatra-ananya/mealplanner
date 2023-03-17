@@ -11,8 +11,6 @@ public abstract class IngredientList implements Writable {
 
     protected ArrayList<Ingredient> ingredients;
 
-    // cannot be instantiated because abstract
-
     // MODIFIES: this
     // EFFECTS: if the input ingredient is already in the ingredient list, its quantity in the list is increased
     //          by the given quantity
@@ -32,7 +30,6 @@ public abstract class IngredientList implements Writable {
     // EFFECTS: removes the given ingredient from the ingredient list
     protected void removeIngredient(Ingredient inputIngredient) {
         if (this.contains(inputIngredient)) {
-            //Ingredient existingIngredient = this.getSpecificIngredient(inputIngredient);
             this.ingredients.remove(inputIngredient);
         }
     }
@@ -92,6 +89,7 @@ public abstract class IngredientList implements Writable {
         return jsonArray;
     }
 
+    // EFFECTS: inherited from Writable
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

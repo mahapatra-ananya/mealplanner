@@ -6,8 +6,6 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 
-// JSONSerializationDemo application used as reference
-
 public class ShoppingList extends IngredientList implements Writable {
 
     // EFFECTS: creates a new shopping list with an empty ingredient list
@@ -24,6 +22,7 @@ public class ShoppingList extends IngredientList implements Writable {
     }
 
 
+    // EFFECTS: inherited from superclass IngredientList
     @Override
     public void removeIngredient(Ingredient inputIngredient) {
         super.removeIngredient(inputIngredient);

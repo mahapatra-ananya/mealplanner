@@ -8,7 +8,7 @@ import java.io.*;
 
 // JSONSerializationDemo application used as reference
 
-// Represents a writer that writes JSON representation of ingredient, meal, shopping list, pantry, and day to file
+// Represents a writer that writes JSON representation of meal, shopping list, pantry, and day to file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -25,13 +25,6 @@ public class JsonWriter {
     public void open() throws FileNotFoundException {
         writer = new PrintWriter(new File(destination));
     }
-
-    // MODIFIES: this
-    // EFFECTS: writes JSON representation of ingredient to file
-    /*public void write(Ingredient ingredient) {
-        JSONObject json = ingredient.toJson();
-        saveToFile(json.toString(TAB));
-    }*/
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of meal to file
@@ -53,13 +46,6 @@ public class JsonWriter {
         JSONObject json = shoppingList.toJson();
         saveToFile(json.toString(TAB));
     }
-
-    // MODIFIES: this
-    // EFFECTS: writes JSON representation of meal list to file
-    /*public void write(MealList mealList) {
-        JSONObject json = mealList.toJson();
-        saveToFile(json.toString(TAB));
-    }*/
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of day to file

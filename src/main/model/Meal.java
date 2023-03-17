@@ -63,6 +63,7 @@ public class Meal extends IngredientList {
         return type;
     }
 
+    // EFFECTS: inherited from IngredientList
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

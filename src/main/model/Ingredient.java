@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+// JSONSerializationDemo application used as reference
+
 public class Ingredient implements Writable {
 
     private String name;
@@ -39,6 +41,7 @@ public class Ingredient implements Writable {
         this.quantity -= amount;
     }
 
+    // EFFECTS: inherited from Writable
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

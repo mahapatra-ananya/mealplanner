@@ -55,18 +55,6 @@ public class JsonWriterTest extends JsonTest {
             // pass
         }
 
-        /*try {
-            MealList mealList = new MealList();
-            Meal meal = new Meal("My meal");
-            meal.setTypeForJson("Meal type");
-            meal.addIngredient(new Ingredient("i", 1));
-            mealList.addMeal(meal);
-            JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
-            writer.open();
-            fail("IOException was expected");
-        } catch (IOException e) {
-            // pass
-        }*/
     }
 
 
@@ -141,24 +129,6 @@ public class JsonWriterTest extends JsonTest {
             fail("Exception should not have been thrown");
         }
     }
-
-    /*@Test
-    void testWriterEmptyMealListFile() {
-        try {
-            MealList mealList = new MealList();
-            JsonWriter writer = new JsonWriter("./data/testWriterEmptyMealList.json");
-            writer.open();
-            writer.write(mealList);
-            writer.close();
-
-            JsonReader reader = new JsonReader("./data/testWriterEmptyMealList.json");
-            mealList = reader.readMealList();
-            assertEquals(0, mealList.getMeals().size());
-        } catch (IOException e) {
-            fail("Exception should not have been thrown");
-        }
-    }*/
-
 
 
     @Test
@@ -253,28 +223,5 @@ public class JsonWriterTest extends JsonTest {
             fail("Exception should not have been thrown");
         }
     }
-
-    /*@Test
-    void testWriterGeneralMealListFile() {
-        try {
-            MealList mealList = new MealList();
-            Meal m = new Meal("m");
-            m.setTypeForJson("t");
-            m.addIngredient(new Ingredient("ingredient1", 20));
-            m.addIngredient(new Ingredient("ingredient2", 3.3));
-            mealList.addMeal(m);
-            JsonWriter writer = new JsonWriter("./data/testWriterGeneralMealList.json");
-            writer.open();
-            writer.write(mealList);
-            writer.close();
-
-            JsonReader reader = new JsonReader("./data/testWriterGeneralMealList.json");
-            mealList = reader.readMealList();
-            assertEquals(1, mealList.getMeals().size());
-            checkMeal("m", "t", 2, mealList.getMeals().get(0));
-        } catch (IOException e) {
-            fail("Exception should not have been thrown");
-        }
-    }*/
 
 }

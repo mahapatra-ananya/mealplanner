@@ -40,21 +40,4 @@ public class MealList {
         this.meals.add(m);
     }
 
-    /*@Override
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        json.put("meals", mealsToJson());
-        return json;
-    }
-
-    // EFFECTS: returns meals in this meal list as a JSON array
-    protected JSONArray mealsToJson() {
-        JSONArray jsonArray = new JSONArray();
-
-        for (Meal m : meals) {
-            jsonArray.put(m.toJson());
-        }
-
-        return jsonArray;
-    }*/
 }

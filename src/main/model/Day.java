@@ -7,6 +7,8 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.List;
 
+// JSONSerializationDemo application used as reference
+
 public class Day extends MealList implements Writable {
 
     private String name;
@@ -31,6 +33,7 @@ public class Day extends MealList implements Writable {
         return returnStatement.toString();
     }
 
+    // EFFECTS: inherited from Writable
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

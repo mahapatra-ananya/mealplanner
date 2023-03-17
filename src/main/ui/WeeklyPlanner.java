@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 // Structure of UI class and runWeeklyPlanner method referenced from TellerApp
+// JSONSerializationDemo application used as a reference for persistence
 public class WeeklyPlanner {
 
     private static final String JSON_PANTRY_FILE = "./data/pantry.json";
@@ -66,12 +67,12 @@ public class WeeklyPlanner {
         mealsForTheWeek = new MealList();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        createReadersAndWriters();
+        instantiateReadersAndWriters();
         runWeeklyPlanner();
     }
 
     // EFFECTS: instantiates all the JSON readers and writers
-    private void createReadersAndWriters() {
+    private void instantiateReadersAndWriters() {
         jsonPantryWriter = new JsonWriter(JSON_PANTRY_FILE);
         jsonPantryReader = new JsonReader(JSON_PANTRY_FILE);
         jsonShoppingListWriter = new JsonWriter(JSON_SHOPPING_LIST_FILE);
@@ -93,7 +94,7 @@ public class WeeklyPlanner {
     }
 
     // EFFECTS: takes user input and keeps running the program
-    //          if the user inputs "7", ends the program
+    //          if the user inputs "9", ends the program
     private void runWeeklyPlanner() {
         boolean loop = true;
 
@@ -128,8 +129,8 @@ public class WeeklyPlanner {
     }
 
 
-    // EFFECTS: only runs if user inputs anything other than "9"
-    //          if the user inputs a number from 1-6, executes the respective required function
+    // REQUIRES: user must input anything other than "9"
+    // EFFECTS: if the user inputs a number from 1-6, executes the respective required function
     //          otherwise, requests the user to only enter valid inputs
     private void doThing(String whatToDo) {
         if (whatToDo.equals("1")) {
@@ -411,10 +412,10 @@ public class WeeklyPlanner {
 
     // EFFECTS: allows user to choose to save pantry, shopping list and weekly planner to file
     private void doSavingToFile() {
-        System.out.println("What would you like to save? Type 'p' for pantry, 's' for the shopping list, and 'w' for"
-                + "the full weekly planner.");
         Boolean loop = true;
         while (loop) {
+            System.out.println("What would you like to save? Type 'p' for pantry, 's' for the shopping list, and 'w'"
+                    + " for the full weekly planner.");
             String choice = input.nextLine();
             choice.toLowerCase();
             if (choice.equals("s")) {
@@ -501,10 +502,10 @@ public class WeeklyPlanner {
 
     // EFFECTS: allows users to choose to load pantry, shopping list and weekly planner from file
     private void doLoadingFromFile() {
-        System.out.println("What would you like to load? Type 'p' for pantry, 's' for the shopping list, and 'w' for"
-                + " the full weekly planner.");
         Boolean loop = true;
         while (loop) {
+            System.out.println("What would you like to load? Type 'p' for pantry, 's' for the shopping list, and 'w' "
+                    + "for the full weekly planner.");
             String choice = input.nextLine();
             choice.toLowerCase();
             if (choice.equals("s")) {
@@ -564,20 +565,6 @@ public class WeeklyPlanner {
         }
     }
 
-    // MODIFIES: mealsForTheWeek
-    // EFFECTS: adds meals from all loaded days of the week to mealsForTheWeek
-    /*private void addAllMealsToMealsForTheWeekFromFile(Day sun, Day mon, Day tue, Day wed, Day thu, Day fri, Day sat) {
-        mealsForTheWeek = new MealList();
-        addMealToMealsForTheWeekFromFile(sun);
-        addMealToMealsForTheWeekFromFile(mon);
-        addMealToMealsForTheWeekFromFile(tue);
-        addMealToMealsForTheWeekFromFile(wed);
-        addMealToMealsForTheWeekFromFile(thu);
-        addMealToMealsForTheWeekFromFile(fri);
-        addMealToMealsForTheWeekFromFile(sat);
-
-    }*/
-
     //  MODIFIES: mealsForTheWeek
     //  EFFECTS: adds meals from a loaded day of the week to mealsForTheWeek
     private void addMealsToMealsForTheWeekFromFile(Day day) {
@@ -585,6 +572,5 @@ public class WeeklyPlanner {
             mealsForTheWeek.addMeal(m);
         }
     }
-
 
 }
