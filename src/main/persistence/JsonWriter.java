@@ -56,10 +56,10 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of meal list to file
-    public void write(MealList mealList) {
+    /*public void write(MealList mealList) {
         JSONObject json = mealList.toJson();
         saveToFile(json.toString(TAB));
-    }
+    }*/
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of day to file

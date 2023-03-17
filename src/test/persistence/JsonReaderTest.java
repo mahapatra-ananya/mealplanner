@@ -45,13 +45,13 @@ class JsonReaderTest extends JsonTest {
             // pass
         }
 
-        JsonReader mealListReader = new JsonReader("./data/noSuchFile.json");
+        /*JsonReader mealListReader = new JsonReader("./data/noSuchFile.json");
         try {
             MealList mealList = mealListReader.readMealList();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
-        }
+        }*/
     }
 
     @Test
@@ -91,13 +91,13 @@ class JsonReaderTest extends JsonTest {
             fail("Couldn't read from file");
         }
 
-        JsonReader mealListReader = new JsonReader("./data/testReaderEmptyMealList.json");
+        /*JsonReader mealListReader = new JsonReader("./data/testReaderEmptyMealList.json");
         try {
             MealList mealList = mealListReader.readMealList();
             assertEquals(0, mealList.getMeals().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
-        }
+        }*/
     }
 
     @Test
@@ -150,7 +150,7 @@ class JsonReaderTest extends JsonTest {
             fail("Couldn't read from file");
         }
 
-        JsonReader mealListReader = new JsonReader("./data/testReaderGeneralMealList.json");
+        /*JsonReader mealListReader = new JsonReader("./data/testReaderGeneralMealList.json");
         try {
             MealList mealList = mealListReader.readMealList();
             List<Meal> meals = mealList.getMeals();
@@ -159,6 +159,6 @@ class JsonReaderTest extends JsonTest {
             checkMeal("second m", "second t", 2, meals.get(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
-        }
+        }*/
     }
 }

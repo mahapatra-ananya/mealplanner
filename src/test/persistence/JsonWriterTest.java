@@ -55,7 +55,7 @@ public class JsonWriterTest extends JsonTest {
             // pass
         }
 
-        try {
+        /*try {
             MealList mealList = new MealList();
             Meal meal = new Meal("My meal");
             meal.setTypeForJson("Meal type");
@@ -66,7 +66,7 @@ public class JsonWriterTest extends JsonTest {
             fail("IOException was expected");
         } catch (IOException e) {
             // pass
-        }
+        }*/
     }
 
 
@@ -142,7 +142,7 @@ public class JsonWriterTest extends JsonTest {
         }
     }
 
-    @Test
+    /*@Test
     void testWriterEmptyMealListFile() {
         try {
             MealList mealList = new MealList();
@@ -157,7 +157,7 @@ public class JsonWriterTest extends JsonTest {
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
-    }
+    }*/
 
 
 
@@ -254,7 +254,7 @@ public class JsonWriterTest extends JsonTest {
         }
     }
 
-    @Test
+    /*@Test
     void testWriterGeneralMealListFile() {
         try {
             MealList mealList = new MealList();
@@ -275,6 +275,6 @@ public class JsonWriterTest extends JsonTest {
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
-    }
+    }*/
 
 }

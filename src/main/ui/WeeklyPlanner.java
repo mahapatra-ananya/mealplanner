@@ -550,7 +550,14 @@ public class WeeklyPlanner {
             thursday = jsonThursdayReader.readDay();
             friday = jsonFridayReader.readDay();
             saturday = jsonSaturdayReader.readDay();
-            addAllMealsToMealsForTheWeekFromFile(sunday, monday, tuesday, wednesday, thursday, friday, saturday);
+            mealsForTheWeek = new MealList();
+            addMealsToMealsForTheWeekFromFile(sunday);
+            addMealsToMealsForTheWeekFromFile(monday);
+            addMealsToMealsForTheWeekFromFile(tuesday);
+            addMealsToMealsForTheWeekFromFile(wednesday);
+            addMealsToMealsForTheWeekFromFile(thursday);
+            addMealsToMealsForTheWeekFromFile(friday);
+            addMealsToMealsForTheWeekFromFile(saturday);
             System.out.println("Loaded weekly planner from file.");
         } catch (IOException e) {
             System.out.println("Unable to read from file.");
@@ -559,7 +566,7 @@ public class WeeklyPlanner {
 
     // MODIFIES: mealsForTheWeek
     // EFFECTS: adds meals from all loaded days of the week to mealsForTheWeek
-    private void addAllMealsToMealsForTheWeekFromFile(Day sun, Day mon, Day tue, Day wed, Day thu, Day fri, Day sat) {
+    /*private void addAllMealsToMealsForTheWeekFromFile(Day sun, Day mon, Day tue, Day wed, Day thu, Day fri, Day sat) {
         mealsForTheWeek = new MealList();
         addMealToMealsForTheWeekFromFile(sun);
         addMealToMealsForTheWeekFromFile(mon);
@@ -569,11 +576,11 @@ public class WeeklyPlanner {
         addMealToMealsForTheWeekFromFile(fri);
         addMealToMealsForTheWeekFromFile(sat);
 
-    }
+    }*/
 
     //  MODIFIES: mealsForTheWeek
     //  EFFECTS: adds meals from a loaded day of the week to mealsForTheWeek
-    private void addMealToMealsForTheWeekFromFile(Day day) {
+    private void addMealsToMealsForTheWeekFromFile(Day day) {
         for (Meal m: day.getMeals()) {
             mealsForTheWeek.addMeal(m);
         }

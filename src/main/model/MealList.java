@@ -7,7 +7,7 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealList implements Writable {
+public class MealList {
 
     protected List<Meal> meals;
 
@@ -40,7 +40,7 @@ public class MealList implements Writable {
         this.meals.add(m);
     }
 
-    @Override
+    /*@Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("meals", mealsToJson());
@@ -56,5 +56,5 @@ public class MealList implements Writable {
         }
 
         return jsonArray;
-    }
+    }*/
 }

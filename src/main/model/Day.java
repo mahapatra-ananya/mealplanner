@@ -1,11 +1,13 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Day extends MealList {
+public class Day extends MealList implements Writable {
 
     private String name;
 
@@ -35,6 +37,15 @@ public class Day extends MealList {
         json.put("name", name);
         json.put("meals", mealsToJson());
         return json;
+    }
+
+    // EFFECTS: returns meals in this meal list as a JSON array
+    protected JSONArray mealsToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Meal m : meals) {
+            jsonArray.put(m.toJson());
+        }
+        return jsonArray;
     }
 
 }

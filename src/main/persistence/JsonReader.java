@@ -55,11 +55,11 @@ public class JsonReader {
 
     // EFFECTS: reads MealList from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public MealList readMealList() throws IOException {
+    /*public MealList readMealList() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseMealList(jsonObject);
-    }
+    }*/
 
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
@@ -124,11 +124,11 @@ public class JsonReader {
     }
 
     // EFFECTS: parses meal list from JSON object and returns it
-    private MealList parseMealList(JSONObject jsonObject) {
+    /*private MealList parseMealList(JSONObject jsonObject) {
         MealList mealList = new MealList();
         addMeals(mealList, jsonObject);
         return mealList;
-    }
+    }*/
 
     // MODIFIES: MealList
     // EFFECTS: parses meals from JSON object and adds them to meal list
