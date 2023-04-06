@@ -1,13 +1,11 @@
 package ui;
 
-import model.Day;
-
 import java.io.FileNotFoundException;
 
-public class Main {
+public class ConsoleUI {
     public static void main(String[] args) {
         try {
-            new WeeklyPlanner();
+            new ConsoleWeeklyPlanner();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to run application as the file is not found.");
         }
