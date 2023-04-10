@@ -1,10 +1,13 @@
 package persistence;
 
 import model.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // JSONSerializationDemo application used as reference
 
@@ -52,6 +55,30 @@ public class JsonWriter {
     public void write(Day day) {
         JSONObject json = day.toJson();
         saveToFile(json.toString(TAB));
+    }
+
+    public void write(ArrayList<String> los) {
+        saveToFile(stringsToJson(los).toString(TAB));
+    }
+
+    protected JSONArray stringsToJsonArray(ArrayList<String> los) {
+        JSONArray jsonArray = new JSONArray();
+
+        for (String s: los) {
+            JSONObject json = new JSONObject();
+            json.put("value", s);
+            jsonArray.put(json);
+        }
+
+        return jsonArray;
+    }
+
+    // EFFECTS: inherited from Writable
+    //@Override
+    public JSONObject stringsToJson(ArrayList<String> los) {
+        JSONObject json = new JSONObject();
+        json.put("strings", stringsToJsonArray(los));
+        return json;
     }
 
     // MODIFIES: this

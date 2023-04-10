@@ -1,7 +1,9 @@
 package ui;
 
-import model.Ingredient;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import javax.lang.model.element.Element;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -11,7 +13,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 // ORACLE list demo used as reference
@@ -19,26 +22,37 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
 
     private JTextField ingredientNameTextField;
     private JTextField ingredientQuantityTextField;
-
+    private JLabel ingredientNameLabel;
+    private JLabel ingredientQuantityLabel;
+    private static final String JSON_ELEMENTS_FILE = "./data/elements.json";
+    private JPanel namePanel;
+    private JPanel quantityPanel;
+    private JPanel addPanel;
+    private JPanel bottomPanel;
+    private JButton addButton;
     private JButton deleteButton;
+    private JButton saveButton;
+    private JButton loadButton;
+    private JsonWriter jsonStringsWriter;
+    private JsonReader jsonStringsReader;
     private DefaultListModel listModel;
 
     private boolean alreadyEnabled = false;
-    private JButton button;
     private JList list;
+    private ArrayList<String> strings;
+    private static final Icon addIcon = new ImageIcon("src/main/images/Untitled.png");
+    private static final Icon deleteIcon = new ImageIcon("src/main/images/deleteicon.png");
 
     public GraphicalWeeklyPlanner() throws FileNotFoundException {
-        // {
-        //  JsonWriter writer = new JsonWriter("");
-        //writer.open();
-        //} finally {
-        //  System.out.println("Hi");
-        // }
+
+        jsonStringsWriter = new JsonWriter(JSON_ELEMENTS_FILE);
+        jsonStringsReader = new JsonReader(JSON_ELEMENTS_FILE);
 
         listModel = new DefaultListModel();
         listModel.addElement("Onion: 2.5");
+        strings = new ArrayList<>();
+        strings.add("Onion: 2.5");
 
-        //Create the list and put it in a scroll pane.
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
@@ -47,10 +61,48 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
         list.setFixedCellWidth(500);
         JScrollPane listScrollPane = new JScrollPane(list);
 
-        Icon addIcon = new ImageIcon("src/main/images/Untitled.png");
-        Icon deleteIcon = new ImageIcon("src/main/images/deleteicon.png");
+        createPanels();
 
-        JButton addButton = new JButton(addIcon);
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(BorderLayout.SOUTH, bottomPanel);
+        mainPanel.add(BorderLayout.NORTH, addPanel);
+
+        add(listScrollPane, BorderLayout.CENTER);
+        add(mainPanel, BorderLayout.PAGE_END);
+    }
+
+    public void createPanels() {
+        textFieldAndLabel();
+
+        addPanel = new JPanel();
+        addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.LINE_AXIS));
+        //addPanel.add(Box.createHorizontalStrut(5));
+        // addPanel.add(Box.createHorizontalStrut(5));
+        addPanel.add(namePanel);
+        addPanel.add(quantityPanel);
+        addPanel.add(addButton);
+        //addPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+        bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(BorderLayout.WEST, deleteButton);
+        bottomPanel.add(BorderLayout.CENTER, saveButton);
+        bottomPanel.add(BorderLayout.EAST, loadButton);
+    }
+
+    public void textFieldAndLabel() {
+        panelComponents();
+
+        namePanel = new JPanel(new BorderLayout());
+        namePanel.add(BorderLayout.NORTH, ingredientNameLabel);
+        namePanel.add(BorderLayout.SOUTH, ingredientNameTextField);
+
+        quantityPanel = new JPanel(new BorderLayout());
+        quantityPanel.add(BorderLayout.NORTH, ingredientQuantityLabel);
+        quantityPanel.add(BorderLayout.SOUTH, ingredientQuantityTextField);
+    }
+
+    public void panelComponents() {
+        addButton = new JButton(addIcon);
         AddListener addListener = new AddListener(addButton);
         addButton.setActionCommand("add");
         addButton.addActionListener(addListener);
@@ -60,34 +112,75 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
         deleteButton.setActionCommand("delete");
         deleteButton.addActionListener(new DeleteListener());
 
+        saveButton = new JButton("Save");
+        saveButton.setActionCommand("save");
+        saveButton.addActionListener(new SaveListener());
+
+        loadButton = new JButton("Load");
+        loadButton.setActionCommand("load");
+        loadButton.addActionListener(new LoadListener());
 
         ingredientNameTextField = new JTextField(8);
         ingredientNameTextField.addActionListener(addListener);
         ingredientNameTextField.getDocument().addDocumentListener(addListener);
-        String name = listModel.getElementAt(
-                list.getSelectedIndex()).toString();
 
         ingredientQuantityTextField = new JTextField(8);
         ingredientQuantityTextField.addActionListener(addListener);
         ingredientQuantityTextField.getDocument().addDocumentListener(addListener);
-        String quantity = listModel.getElementAt(
-                list.getSelectedIndex()).toString();
 
-        JPanel buttonPane = new JPanel();
-        buttonPane.setLayout(new BoxLayout(buttonPane,
-                BoxLayout.LINE_AXIS));
-        buttonPane.add(deleteButton);
-        buttonPane.add(Box.createHorizontalStrut(5));
-        buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
-        buttonPane.add(Box.createHorizontalStrut(5));
-        buttonPane.add(ingredientNameTextField);
-        buttonPane.add(ingredientQuantityTextField);
-        buttonPane.add(addButton);
-        buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        ingredientNameLabel = new JLabel("Name");
+        ingredientQuantityLabel = new JLabel("Quantity");
+    }
 
-        add(listScrollPane, BorderLayout.CENTER);
-        add(buttonPane, BorderLayout.PAGE_END);
+    class SaveListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                jsonStringsWriter.open();
+                jsonStringsWriter.write(strings);
+                jsonStringsWriter.close();
+                //System.out.println("Saved pantry to " + JSON_ELEMENTS_FILE);
+            } catch (FileNotFoundException ex) {
+                System.out.println("Unable to write to file: " + JSON_ELEMENTS_FILE);
+            }
+        }
+    }
 
+    class LoadListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                strings = jsonStringsReader.readStrings();
+                for (String s : strings) {
+                    if (!alreadyInList(s)) {
+
+                        int index = list.getSelectedIndex(); //get selected index
+                        if (index == -1) { //no selection, so insert at beginning
+                            index = 0;
+                        } else {           //add after the selected item
+                            index++;
+                        }
+
+                        listModel.addElement(s);
+
+                        ingredientNameTextField.requestFocusInWindow();
+                        ingredientNameTextField.setText("");
+                        ingredientQuantityTextField.requestFocusInWindow();
+                        ingredientQuantityTextField.setText("");
+
+                        //Select the new item and make it visible.
+                        list.setSelectedIndex(index);
+                        list.ensureIndexIsVisible(index);
+                    }
+                }
+            } catch (IOException ex) {
+                System.out.println("Unable to read from file: " + JSON_ELEMENTS_FILE);
+            }
+        }
+
+        protected boolean alreadyInList(String name) {
+            return listModel.contains(name);
+        }
 
     }
 
@@ -98,6 +191,7 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
             //so go ahead and remove whatever's selected.
             int index = list.getSelectedIndex();
             listModel.remove(index);
+            strings.remove(index);
 
             int size = listModel.getSize();
 
@@ -144,13 +238,18 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
                 index++;
             }
 
-            listModel.addElement(ingredientNameTextField.getText() + ": " + ingredientQuantityTextField.getText());
+            String nameField = ingredientNameTextField.getText();
+            String quantityField = ingredientQuantityTextField.getText();
+            listModel.addElement(nameField + ": " + quantityField);
+            strings.add(nameField + ": " + quantityField);
             //If we just wanted to add to the end, we'd do this:
             //listModel.addElement(employeeName.getText());
 
             //Reset the text field.
             ingredientNameTextField.requestFocusInWindow();
             ingredientNameTextField.setText("");
+            ingredientQuantityTextField.requestFocusInWindow();
+            ingredientQuantityTextField.setText("");
 
             //Select the new item and make it visible.
             list.setSelectedIndex(index);
