@@ -3,7 +3,6 @@ package ui;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
-import javax.lang.model.element.Element;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -57,15 +56,18 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
         list.addListSelectionListener(this);
-        list.setVisibleRowCount(15);
+        list.setVisibleRowCount(30);
         list.setFixedCellWidth(500);
         JScrollPane listScrollPane = new JScrollPane(list);
 
         createPanels();
+        JLabel pantryImage = new JLabel(new ImageIcon("src/main/images/pantry.png"));
+        //pantryImage.setSize(500, 500);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(BorderLayout.SOUTH, bottomPanel);
+        mainPanel.add(BorderLayout.CENTER, bottomPanel);
         mainPanel.add(BorderLayout.NORTH, addPanel);
+        mainPanel.add(BorderLayout.SOUTH, pantryImage);
 
         add(listScrollPane, BorderLayout.CENTER);
         add(mainPanel, BorderLayout.PAGE_END);
@@ -139,10 +141,32 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
                 jsonStringsWriter.open();
                 jsonStringsWriter.write(strings);
                 jsonStringsWriter.close();
-                //System.out.println("Saved pantry to " + JSON_ELEMENTS_FILE);
+                JDialog saveDialog = new JDialog();
+                saveDialog.setSize(600, 300);
+                saveDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                saveDialog.setTitle("Saved");
+                JLabel label = new JLabel("Your ingredients have been saved successfully.");
+                label.setSize(100, 100);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setVerticalAlignment(JLabel.CENTER);
+                saveDialog.add(label);
+                saveDialog.setVisible(true);
             } catch (FileNotFoundException ex) {
-                System.out.println("Unable to write to file: " + JSON_ELEMENTS_FILE);
+                handleException();
             }
+        }
+
+        protected void handleException() {
+            JDialog dialog = new JDialog();
+            dialog.setSize(600, 300);
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setTitle("File Not Found");
+            JLabel label = new JLabel("Oops! Unable to read from file: " + JSON_ELEMENTS_FILE);
+            label.setSize(100, 100);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setVerticalAlignment(JLabel.CENTER);
+            dialog.add(label);
+            dialog.setVisible(true);
         }
     }
 
@@ -173,13 +197,40 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
                         list.ensureIndexIsVisible(index);
                     }
                 }
+                loadDialog();
             } catch (IOException ex) {
-                System.out.println("Unable to read from file: " + JSON_ELEMENTS_FILE);
+                handleException();
             }
         }
 
         protected boolean alreadyInList(String name) {
             return listModel.contains(name);
+        }
+
+        protected void loadDialog() {
+            JDialog loadDialog = new JDialog();
+            loadDialog.setSize(600, 300);
+            loadDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            loadDialog.setTitle("Loaded");
+            JLabel label = new JLabel("Your ingredients have been loaded successfully.");
+            label.setSize(100, 100);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setVerticalAlignment(JLabel.CENTER);
+            loadDialog.add(label);
+            loadDialog.setVisible(true);
+        }
+
+        protected void handleException() {
+            JDialog dialog = new JDialog();
+            dialog.setSize(600, 300);
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setTitle("File Not Found");
+            JLabel label = new JLabel("Oops! Unable to read from file: " + JSON_ELEMENTS_FILE);
+            label.setSize(100, 100);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setVerticalAlignment(JLabel.CENTER);
+            dialog.add(label);
+            dialog.setVisible(true);
         }
 
     }
@@ -310,65 +361,4 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
             }
         }
     }
-
-    /* JFrame frame = new JFrame("Your Pantry Application");
-        frame.setSize(1000,500);
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-    JPanel topPanel = new JPanel();
-    JPanel bottomPanel = new JPanel();
-    JLabel label = new JLabel("Ingredients in your Pantry");
-
-
-    //JButton addButton = new JButton(addIcon);
-    //addButton.setActionCommand("myButton");
-    //addButton.addActionListener(this);
-
-    ingredientNameTextField = new JTextField(8);
-    JLabel ingredientNameLabel = new JLabel("Ingredient Name");
-    ingredientQuantityTextField = new JTextField(8);
-    JLabel ingredientQuantityLabel = new JLabel("Ingredient Quantity");
-
-    // TODO 1: each new ingredient will be displayed with name, quantity, and delete button
-    // TODO 2: options on main frame to add ingredients
-    // TODO 3: visual component
-
-        topPanel.add(label);
-
-        bottomPanel.add(ingredientNameLabel);
-        bottomPanel.add(ingredientNameTextField);
-        bottomPanel.add(ingredientQuantityLabel);
-        bottomPanel.add(ingredientQuantityTextField);
-        bottomPanel.add(addButton);
-
-        frame.getContentPane().add(BorderLayout.CENTER, topPanel);
-        frame.getContentPane().add(BorderLayout.SOUTH, bottomPanel);
-        frame.setVisible(true);
-
-
-
-    //public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("myButton")) {
-
-            Ingredient i = new Ingredient(ingredientNameTextField.getText(), ingredientQuantityTextField.getText());
-            // TODO: new ingredient formed with given name and quantity
-        }
-    }
-
-    public void createIngredient(Ingredient i) {
-        JPanel ingredientPanel = new JPanel(new BorderLayout());
-        JLabel name = new JLabel(i.getName());
-        JLabel quantity = new JLabel(i.getQuantity());
-        //createDeleteButton();
-        ingredientPanel.add(BorderLayout.WEST, createDeleteButton());
-        ingredientPanel.add(BorderLayout.CENTER, name);
-        ingredientPanel.add(BorderLayout.EAST, quantity);
-
-    }
-
-    public JButton createDeleteButton() {
-        JButton deleteButton = new JButton();
-        return deleteButton;
-    }*/
-
 }

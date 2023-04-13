@@ -31,3 +31,14 @@ list of ingredients I need for the week but haven't yet bought
 if I want to do so
 - As a user, I want to have the option to reload my weekly planner and pantry 
 from file and resume exactly where I left off at an earlier time if I want to do so
+
+
+## Instructions for Grader (PHASE 3)
+
+- You can generate the first required action related to adding Xs to a Y by typing the name of an ingredient and its
+desired quantity in the respective text fields, and clicking the "+" button.
+- You can generate the second required action related to adding Xs to a Y by selecting an ingredient from the displayed
+ones and then clicking the trashcan button to delete it.
+- You can locate my visual component by opening the application - you will see a picture of a pantry.
+- You can save the state of my application by clicking the save button.
+- You can reload the state of my application by clicking the load button.
