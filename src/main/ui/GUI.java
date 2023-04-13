@@ -1,20 +1,20 @@
 package ui;
 
-import java.awt.*;
 import java.io.FileNotFoundException;
 import javax.swing.*;
 
 public class GUI {
+
+    // EFFECTS: Opens a new window for the application with a new graphical pantry planner
     public static void main(String[] args) {
         try {
-            //Create and set up the window.
+
             JFrame frame = new JFrame("Your Pantry");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            //Create and set up the content pane.
-            JComponent newContentPane = new GraphicalWeeklyPlanner();
-            newContentPane.setOpaque(true); //content panes must be opaque
-            frame.setContentPane(newContentPane);
+            JComponent panel = new GraphicalPantryPlanner();
+            panel.setOpaque(true); //content panes must be opaque
+            frame.setContentPane(panel);
 
             //Display the window.
             frame.pack();

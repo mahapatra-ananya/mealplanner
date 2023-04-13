@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 
 // ORACLE list demo used as reference
-public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListener {
+public class GraphicalPantryPlanner extends JPanel implements ListSelectionListener {
 
     private JTextField ingredientNameTextField;
     private JTextField ingredientQuantityTextField;
@@ -42,15 +42,14 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
     private static final Icon addIcon = new ImageIcon("src/main/images/Untitled.png");
     private static final Icon deleteIcon = new ImageIcon("src/main/images/deleteicon.png");
 
-    public GraphicalWeeklyPlanner() throws FileNotFoundException {
+    // EFFECTS: creates a new graphical weekly planner with an empty list of ingredients and a panel of buttons
+    public GraphicalPantryPlanner() throws FileNotFoundException {
 
         jsonStringsWriter = new JsonWriter(JSON_ELEMENTS_FILE);
         jsonStringsReader = new JsonReader(JSON_ELEMENTS_FILE);
 
         listModel = new DefaultListModel();
-        listModel.addElement("Onion: 2.5");
         strings = new ArrayList<>();
-        strings.add("Onion: 2.5");
 
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -62,7 +61,6 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
 
         createPanels();
         JLabel pantryImage = new JLabel(new ImageIcon("src/main/images/pantry.png"));
-        //pantryImage.setSize(500, 500);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(BorderLayout.CENTER, bottomPanel);
@@ -73,17 +71,16 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
         add(mainPanel, BorderLayout.PAGE_END);
     }
 
+
+    // EFFECTS: creates all the panels to be placed within the main panel next to the list model
     public void createPanels() {
         textFieldAndLabel();
 
         addPanel = new JPanel();
         addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.LINE_AXIS));
-        //addPanel.add(Box.createHorizontalStrut(5));
-        // addPanel.add(Box.createHorizontalStrut(5));
         addPanel.add(namePanel);
         addPanel.add(quantityPanel);
         addPanel.add(addButton);
-        //addPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(BorderLayout.WEST, deleteButton);
@@ -91,6 +88,7 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
         bottomPanel.add(BorderLayout.EAST, loadButton);
     }
 
+    // EFFECTS: creates the panel containing text fields and their labels
     public void textFieldAndLabel() {
         panelComponents();
 
@@ -103,6 +101,7 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
         quantityPanel.add(BorderLayout.SOUTH, ingredientQuantityTextField);
     }
 
+    // EFFECTS: creates all the components to be added to various panels
     public void panelComponents() {
         addButton = new JButton(addIcon);
         AddListener addListener = new AddListener(addButton);
@@ -135,7 +134,8 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
     }
 
     class SaveListener implements ActionListener {
-        @Override
+
+        // EFFECTS: saves the ingredients to file and notifies the user that this has been done
         public void actionPerformed(ActionEvent e) {
             try {
                 jsonStringsWriter.open();
@@ -156,6 +156,7 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
             }
         }
 
+        // Informs users if there is an IOException
         protected void handleException() {
             JDialog dialog = new JDialog();
             dialog.setSize(600, 300);
@@ -171,30 +172,26 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
     }
 
     class LoadListener implements ActionListener {
-        @Override
+
+        // MODIFIES: strings, listModel
+        // EFFECTS: loads the ingredients from file and notifies the user that this has been done
         public void actionPerformed(ActionEvent e) {
             try {
-                strings = jsonStringsReader.readStrings();
+                ArrayList<String> strings1 = jsonStringsReader.readStrings();
+                strings.addAll(strings1);
                 for (String s : strings) {
                     if (!alreadyInList(s)) {
 
-                        int index = list.getSelectedIndex(); //get selected index
-                        if (index == -1) { //no selection, so insert at beginning
+                        int index = list.getSelectedIndex();
+                        if (index == -1) {
                             index = 0;
-                        } else {           //add after the selected item
+                        } else {
                             index++;
                         }
 
                         listModel.addElement(s);
+                        resetAndMakeVisible(index);
 
-                        ingredientNameTextField.requestFocusInWindow();
-                        ingredientNameTextField.setText("");
-                        ingredientQuantityTextField.requestFocusInWindow();
-                        ingredientQuantityTextField.setText("");
-
-                        //Select the new item and make it visible.
-                        list.setSelectedIndex(index);
-                        list.ensureIndexIsVisible(index);
                     }
                 }
                 loadDialog();
@@ -203,10 +200,23 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
             }
         }
 
+        // EFFECTS: resets text fields and makes the added elements visible
+        protected void resetAndMakeVisible(int index) {
+            ingredientNameTextField.requestFocusInWindow();
+            ingredientNameTextField.setText("");
+            ingredientQuantityTextField.requestFocusInWindow();
+            ingredientQuantityTextField.setText("");
+
+            list.setSelectedIndex(index);
+            list.ensureIndexIsVisible(index);
+        }
+
+        // EFFECTS: checks if the given string is already in the list
         protected boolean alreadyInList(String name) {
             return listModel.contains(name);
         }
 
+        // EFFECTS: creates the dialog box to inform users that ingredients have been loaded
         protected void loadDialog() {
             JDialog loadDialog = new JDialog();
             loadDialog.setSize(600, 300);
@@ -220,6 +230,7 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
             loadDialog.setVisible(true);
         }
 
+        // Informs users if there is an IOException
         protected void handleException() {
             JDialog dialog = new JDialog();
             dialog.setSize(600, 300);
@@ -236,22 +247,21 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
     }
 
     class DeleteListener implements ActionListener {
+
+        // EFFECTS: deletes an ingredient from the list
         public void actionPerformed(ActionEvent e) {
-            //This method can be called only if
-            //there's a valid selection
-            //so go ahead and remove whatever's selected.
+
             int index = list.getSelectedIndex();
             listModel.remove(index);
             strings.remove(index);
 
             int size = listModel.getSize();
 
-            if (size == 0) { //Nobody's left, disable firing.
+            if (size == 0) {
                 deleteButton.setEnabled(false);
 
-            } else { //Select an index.
+            } else {
                 if (index == listModel.getSize()) {
-                    //removed item in last position
                     index--;
                 }
 
@@ -261,16 +271,18 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
         }
     }
 
-    //This listener is shared by the text field and the hire button.
+
     class AddListener implements ActionListener, DocumentListener {
         private boolean alreadyEnabled = false;
         private JButton button;
 
+        // EFFECTS: creates a new AddListener
         public AddListener(JButton button) {
             this.button = button;
         }
 
-        //Required by ActionListener.
+        // MODIFIES: list
+        // EFFECTS: adds a new ingredient to the list
         public void actionPerformed(ActionEvent e) {
             String name = ingredientNameTextField.getText();
 
@@ -282,10 +294,10 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
                 return;
             }
 
-            int index = list.getSelectedIndex(); //get selected index
-            if (index == -1) { //no selection, so insert at beginning
+            int index = list.getSelectedIndex();
+            if (index == -1) {
                 index = 0;
-            } else {           //add after the selected item
+            } else {
                 index++;
             }
 
@@ -293,50 +305,53 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
             String quantityField = ingredientQuantityTextField.getText();
             listModel.addElement(nameField + ": " + quantityField);
             strings.add(nameField + ": " + quantityField);
-            //If we just wanted to add to the end, we'd do this:
-            //listModel.addElement(employeeName.getText());
 
-            //Reset the text field.
+
             ingredientNameTextField.requestFocusInWindow();
             ingredientNameTextField.setText("");
             ingredientQuantityTextField.requestFocusInWindow();
             ingredientQuantityTextField.setText("");
 
-            //Select the new item and make it visible.
             list.setSelectedIndex(index);
             list.ensureIndexIsVisible(index);
         }
 
-        //This method tests for string equality. You could certainly
-        //get more sophisticated about the algorithm.  For example,
-        //you might want to ignore white space and capitalization.
+        // EFFECTS: checks if the given string is already in the list
         protected boolean alreadyInList(String name) {
             return listModel.contains(name);
         }
 
-        //Required by DocumentListener.
+        // MODIFIES: this
+        // EFFECTS: enables the button if not already enabled
         public void insertUpdate(DocumentEvent e) {
             enableButton();
         }
 
-        //Required by DocumentListener.
+        // MODIFIES: this
+        // EFFECTS: handles empty text fields by disabling button
         public void removeUpdate(DocumentEvent e) {
             handleEmptyTextField(e);
         }
 
-        //Required by DocumentListener.
+        // MODIFIES: this
+        // EFFECTS: enables button if text fields are not empty
         public void changedUpdate(DocumentEvent e) {
             if (!handleEmptyTextField(e)) {
                 enableButton();
             }
         }
 
+        // MODIFIES: this
+        // EFFECTS: enables button
         private void enableButton() {
             if (!alreadyEnabled) {
                 button.setEnabled(true);
             }
         }
 
+
+        // MODIFIES: this
+        // EFFECTS: disables button & returns true if text field not empty
         private boolean handleEmptyTextField(DocumentEvent e) {
             if (e.getDocument().getLength() <= 0) {
                 button.setEnabled(false);
@@ -347,7 +362,7 @@ public class GraphicalWeeklyPlanner extends JPanel implements ListSelectionListe
         }
     }
 
-    //This method is required by ListSelectionListener.
+    // EFFECTS: allows delete button to be enabled only if list is not empty
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 
