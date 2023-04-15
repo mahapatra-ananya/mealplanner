@@ -1,5 +1,7 @@
 package ui;
 
+import model.Ingredient;
+import model.Pantry;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -24,6 +26,7 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
     private JLabel ingredientNameLabel;
     private JLabel ingredientQuantityLabel;
     private static final String JSON_ELEMENTS_FILE = "./data/elements.json";
+    private Pantry pantry;
     private JPanel namePanel;
     private JPanel quantityPanel;
     private JPanel addPanel;
@@ -32,24 +35,28 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
     private JButton deleteButton;
     private JButton saveButton;
     private JButton loadButton;
-    private JsonWriter jsonStringsWriter;
-    private JsonReader jsonStringsReader;
+   // private JsonWriter jsonStringsWriter;
+    //private JsonReader jsonStringsReader;
+    private JsonWriter jsonPantryWriter;
+    private JsonReader jsonPantryReader;
     private DefaultListModel listModel;
 
     private boolean alreadyEnabled = false;
     private JList list;
-    private ArrayList<String> strings;
+  //  private ArrayList<String> strings;
     private static final Icon addIcon = new ImageIcon("src/main/images/Untitled.png");
     private static final Icon deleteIcon = new ImageIcon("src/main/images/deleteicon.png");
 
     // EFFECTS: creates a new graphical weekly planner with an empty list of ingredients and a panel of buttons
     public GraphicalPantryPlanner() throws FileNotFoundException {
 
-        jsonStringsWriter = new JsonWriter(JSON_ELEMENTS_FILE);
-        jsonStringsReader = new JsonReader(JSON_ELEMENTS_FILE);
+        jsonPantryWriter = new JsonWriter(JSON_ELEMENTS_FILE);
+        jsonPantryReader = new JsonReader(JSON_ELEMENTS_FILE);
+
+        pantry = new Pantry();
 
         listModel = new DefaultListModel();
-        strings = new ArrayList<>();
+        //strings = new ArrayList<>();
 
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -133,14 +140,25 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
         ingredientQuantityLabel = new JLabel("Quantity");
     }
 
+    // REQUIRES: the quantity entered must be a positive number
+    // EFFECTS: creates an Ingredient object according to the user inputted name and quantity
+    private Ingredient createIngredient(String name, String quantity) {
+        double doubleQuantity = Double.parseDouble(quantity);
+        Ingredient ingredient = new Ingredient(name, doubleQuantity);
+        return ingredient;
+    }
+
     class SaveListener implements ActionListener {
 
         // EFFECTS: saves the ingredients to file and notifies the user that this has been done
         public void actionPerformed(ActionEvent e) {
             try {
-                jsonStringsWriter.open();
-                jsonStringsWriter.write(strings);
-                jsonStringsWriter.close();
+                //jsonStringsWriter.open();
+                //jsonStringsWriter.write(strings);
+                //jsonStringsWriter.close();
+                jsonPantryWriter.open();;
+                jsonPantryWriter.write(pantry);
+                jsonPantryWriter.close();
                 JDialog saveDialog = new JDialog();
                 saveDialog.setSize(600, 300);
                 saveDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -177,10 +195,11 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
         // EFFECTS: loads the ingredients from file and notifies the user that this has been done
         public void actionPerformed(ActionEvent e) {
             try {
-                ArrayList<String> strings1 = jsonStringsReader.readStrings();
-                strings.addAll(strings1);
-                for (String s : strings) {
-                    if (!alreadyInList(s)) {
+                //ArrayList<String> strings1 = jsonStringsReader.readStrings();
+                //strings.addAll(strings1);
+                addAllIngredients(jsonPantryReader.readPantry().getIngredients(), pantry);
+                for (Ingredient i : pantry.getIngredients()) {
+                    if (!alreadyInList(i.getName() + ": " + i.getQuantity())) {
 
                         int index = list.getSelectedIndex();
                         if (index == -1) {
@@ -189,7 +208,7 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
                             index++;
                         }
 
-                        listModel.addElement(s);
+                        listModel.addElement(i.getName() + ": " + i.getQuantity());
                         resetAndMakeVisible(index);
 
                     }
@@ -197,6 +216,12 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
                 loadDialog();
             } catch (IOException ex) {
                 handleException();
+            }
+        }
+
+        protected void addAllIngredients(ArrayList<Ingredient> ingredients, Pantry p) {
+            for (Ingredient i: ingredients) {
+                p.addIngredient(i);
             }
         }
 
@@ -253,7 +278,8 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
 
             int index = list.getSelectedIndex();
             listModel.remove(index);
-            strings.remove(index);
+            //strings.remove(index);
+            pantry.removeIngredientAt(index);
 
             int size = listModel.getSize();
 
@@ -303,10 +329,17 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
 
             String nameField = ingredientNameTextField.getText();
             String quantityField = ingredientQuantityTextField.getText();
-            listModel.addElement(nameField + ": " + quantityField);
-            strings.add(nameField + ": " + quantityField);
+            Ingredient i = createIngredient(nameField, quantityField);
+            listModel.addElement(i.getName() + ": " + i.getQuantity());
+           // strings.add(nameField + ": " + quantityField);
+            pantry.addIngredient(i);
 
 
+            resetAndMakeVisible(index);
+        }
+
+        // EFFECTS: resets text fields and makes the added elements visible
+        protected void resetAndMakeVisible(int index) {
             ingredientNameTextField.requestFocusInWindow();
             ingredientNameTextField.setText("");
             ingredientQuantityTextField.requestFocusInWindow();

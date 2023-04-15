@@ -57,7 +57,19 @@ public class JsonWriter {
         saveToFile(json.toString(TAB));
     }
 
-    public void write(ArrayList<String> los) {
+    // MODIFIES: this
+    // EFFECTS: closes writer
+    public void close() {
+        writer.close();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: writes string to file
+    private void saveToFile(String json) {
+        writer.print(json);
+    }
+
+     /*public void write(ArrayList<String> los) {
         saveToFile(stringsToJson(los).toString(TAB));
     }
 
@@ -79,17 +91,6 @@ public class JsonWriter {
         JSONObject json = new JSONObject();
         json.put("strings", stringsToJsonArray(los));
         return json;
-    }
+    }*/
 
-    // MODIFIES: this
-    // EFFECTS: closes writer
-    public void close() {
-        writer.close();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: writes string to file
-    private void saveToFile(String json) {
-        writer.print(json);
-    }
 }

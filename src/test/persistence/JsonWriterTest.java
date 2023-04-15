@@ -56,16 +56,6 @@ public class JsonWriterTest extends JsonTest {
             // pass
         }
 
-        try {
-            ArrayList<String> los = new ArrayList<>();
-            los.add("Onion: 2.5");
-            JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
-            writer.open();
-            fail("IOException was expected");
-        } catch (IOException e) {
-            // pass
-        }
-
     }
 
 
@@ -141,22 +131,6 @@ public class JsonWriterTest extends JsonTest {
         }
     }
 
-    @Test
-    void testWriterEmptyStringsFile() {
-        try {
-            ArrayList<String> los = new ArrayList<>();
-            JsonWriter writer = new JsonWriter("./data/testWriterEmptyStringsList.json");
-            writer.open();
-            writer.write(los);
-            writer.close();
-
-            JsonReader reader = new JsonReader("./data/testWriterEmptyStringsList.json");
-            los = reader.readStrings();
-            assertEquals(0, los.size());
-        } catch (IOException e) {
-            fail("Exception should not have been thrown");
-        }
-    }
 
     @Test
     void testWriterGeneralMealFile() {
@@ -251,25 +225,5 @@ public class JsonWriterTest extends JsonTest {
         }
     }
 
-    @Test
-    void testWriterGeneralStringsFile() {
-        try {
-            ArrayList<String> los = new ArrayList<>();
-            los.add("Onions: 2.5");
-            los.add("Project 210");
-            JsonWriter writer = new JsonWriter("./data/testWriterGeneralStringsList.json");
-            writer.open();
-            writer.write(los);
-            writer.close();
-
-            JsonReader reader = new JsonReader("./data/testWriterGeneralStringsList.json");
-            los = reader.readStrings();
-            assertEquals(2, los.size());
-            assertEquals("Onions: 2.5", los.get(0));
-            assertEquals("Project 210", los.get(1));
-        } catch (IOException e) {
-            fail("Exception should not have been thrown");
-        }
-    }
 
 }

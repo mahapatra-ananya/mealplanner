@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import model.*;
@@ -54,12 +53,6 @@ public class JsonReader {
         return parseDay(jsonObject);
     }
 
-    public ArrayList<String> readStrings() throws IOException {
-        String jsonData = readFile(source);
-        JSONObject jsonObject = new JSONObject(jsonData);
-        return parseStrings(jsonObject);
-    }
-
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
@@ -92,27 +85,6 @@ public class JsonReader {
         ShoppingList shoppingList = new ShoppingList();
         addIngredients(shoppingList, jsonObject);
         return shoppingList;
-    }
-
-    private ArrayList<String> parseStrings(JSONObject jsonObject) {
-        ArrayList<String> los = new ArrayList<>();
-        addStrings(los, jsonObject);
-        return los;
-    }
-
-    private void addStrings(ArrayList<String> los, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("strings");
-        for (Object json : jsonArray) {
-            JSONObject nextString = (JSONObject) json;
-            addString(los, nextString);
-        }
-    }
-
-    // MODIFIES: ingredientList
-    // EFFECTS: parses ingredient from JSON object and adds it to meal
-    private void addString(ArrayList<String> los, JSONObject jsonObject) {
-        String s = jsonObject.getString("value");
-        los.add(s);
     }
 
     // MODIFIES: ingredientList

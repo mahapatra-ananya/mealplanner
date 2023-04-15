@@ -97,4 +97,7 @@ public abstract class IngredientList implements Writable {
         return json;
     }
 
+    public void removeIngredientAt(int index) {
+        this.ingredients.remove(index);
+    }
 }
