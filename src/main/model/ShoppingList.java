@@ -6,7 +6,7 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 
-public class ShoppingList extends IngredientList implements Writable {
+public class ShoppingList extends IngredientList {
 
     // EFFECTS: creates a new shopping list with an empty ingredient list
     public ShoppingList() {

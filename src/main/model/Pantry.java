@@ -7,7 +7,7 @@ import persistence.Writable;
 import java.util.ArrayList;
 
 
-public class Pantry extends IngredientList implements Writable {
+public class Pantry extends IngredientList {
 
     // EFFECTS: creates a new pantry with an empty ingredient list
     public Pantry() {
