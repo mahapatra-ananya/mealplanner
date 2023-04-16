@@ -111,6 +111,15 @@ public class ConsoleWeeklyPlanner {
             }
         }
         System.out.println("Have a healthy, nutritious day!");
+        printLog(EventLog.getInstance());
+    }
+
+    private void printLog(EventLog el) {
+        for (Event next : el) {
+            System.out.println(next.getDate());
+            System.out.println("    " + next.getDescription());
+            System.out.println("");
+        }
     }
 
     // EFFECTS: displays a menu of options that the user can choose from

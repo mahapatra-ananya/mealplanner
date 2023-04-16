@@ -32,6 +32,7 @@ public class Ingredient implements Writable {
     // EFFECTS: increases the quantity of the ingredient by the given amount
     public void increaseQuantity(double amount) {
         this.quantity += amount;
+        EventLog.getInstance().logEvent(new Event(this.name + " quantity increased by " + amount));
     }
 
     // REQUIRES: the final quantity of the ingredient must be a positive number
@@ -39,6 +40,7 @@ public class Ingredient implements Writable {
     // EFFECTS: decreases the quantity of the ingredient by the given amount
     public void decreaseQuantity(double amount) {
         this.quantity -= amount;
+        EventLog.getInstance().logEvent(new Event(this.name + "Ingredient quantity decreased by " + amount));
     }
 
     // EFFECTS: inherited from Writable

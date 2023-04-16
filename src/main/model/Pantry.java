@@ -18,6 +18,21 @@ public class Pantry extends IngredientList implements Writable {
     @Override
     public void removeIngredient(Ingredient inputIngredient) {
         super.removeIngredient(inputIngredient);
+        EventLog.getInstance().logEvent(new Event(inputIngredient.getQuantity() + " "
+                + inputIngredient.getName() + " removed from pantry"));
+    }
+
+    @Override
+    public void addIngredient(Ingredient i) {
+        super.addIngredient(i);
+        EventLog.getInstance().logEvent(new Event(i.getQuantity() + " " + i.getName() + " added to pantry"));
+    }
+
+    @Override
+    public void removeIngredientAt(int i) {
+        EventLog.getInstance().logEvent(new Event(ingredients.get(i).getQuantity() + " "
+                + ingredients.get(i).getName() + " removed from pantry"));
+        super.removeIngredientAt(i);
     }
 
     @Override
@@ -25,6 +40,7 @@ public class Pantry extends IngredientList implements Writable {
     //          formatted to be printed in UI specifically for a pantry
     public String printableIngredientList(String s) {
         s = "The ingredients you already have are: ";
+        EventLog.getInstance().logEvent(new Event("Ingredients in pantry printed to console"));
         return super.printableIngredientList(s);
     }
 

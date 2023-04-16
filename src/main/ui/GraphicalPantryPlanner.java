@@ -219,6 +219,8 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
             }
         }
 
+        // MODIFIES: pantry p
+        // EFFECTS: adds all given ingredients to the pantry
         protected void addAllIngredients(ArrayList<Ingredient> ingredients, Pantry p) {
             for (Ingredient i: ingredients) {
                 p.addIngredient(i);

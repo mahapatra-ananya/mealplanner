@@ -50,6 +50,7 @@ public class Meal extends IngredientList {
     //          formatted to be printed in UI specifically for a meal
     public String printableIngredientList(String s) {
         s = "The ingredients for this meal are: ";
+        EventLog.getInstance().logEvent(new Event("Ingredients in " + this.name + " printed to console"));
         return super.printableIngredientList(s);
     }
 
@@ -61,6 +62,18 @@ public class Meal extends IngredientList {
     // EFFECTS: returns the type of the meal
     public String getType() {
         return type;
+    }
+
+    public void addIngredient(Ingredient i) {
+        super.addIngredient(i);
+        EventLog.getInstance().logEvent(new Event(i.getQuantity() + " " + i.getName() + " added to "
+                + this.name));
+    }
+
+    public void removeIngredient(Ingredient i) {
+        super.removeIngredient(i);
+        EventLog.getInstance().logEvent(new Event(i.getQuantity() + " " + i.getName() + " removed from "
+                + this.name));
     }
 
     // EFFECTS: inherited from IngredientList

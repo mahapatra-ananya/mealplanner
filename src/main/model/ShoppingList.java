@@ -18,6 +18,7 @@ public class ShoppingList extends IngredientList implements Writable {
     //          formatted to be printed in UI specifically for a shopping list
     public String printableIngredientList(String s) {
         s = "Your shopping list is: ";
+        EventLog.getInstance().logEvent(new Event("Ingredients in shopping list printed to console"));
         return super.printableIngredientList(s);
     }
 
@@ -26,6 +27,15 @@ public class ShoppingList extends IngredientList implements Writable {
     @Override
     public void removeIngredient(Ingredient inputIngredient) {
         super.removeIngredient(inputIngredient);
+        EventLog.getInstance().logEvent(new Event(inputIngredient.getQuantity() + " "
+                + inputIngredient.getName() + " removed from shopping list"));
+    }
+
+    @Override
+    public void addIngredient(Ingredient i) {
+        super.addIngredient(i);
+        EventLog.getInstance().logEvent(new Event(i.getQuantity() + " " + i.getName()
+                + " added to shopping list"));
     }
 
 }

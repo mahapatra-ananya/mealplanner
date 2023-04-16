@@ -34,6 +34,8 @@ public class JsonWriter {
     public void write(Meal meal) {
         JSONObject json = meal.toJson();
         saveToFile(json.toString(TAB));
+        EventLog.getInstance().logEvent(new Event(meal.getName() + "( " + meal.getType() + ") "
+                + " written to file"));
     }
 
     // MODIFIES: this
@@ -41,6 +43,7 @@ public class JsonWriter {
     public void write(Pantry pantry) {
         JSONObject json = pantry.toJson();
         saveToFile(json.toString(TAB));
+        EventLog.getInstance().logEvent(new Event("Pantry written to file"));
     }
 
     // MODIFIES: this
@@ -48,6 +51,7 @@ public class JsonWriter {
     public void write(ShoppingList shoppingList) {
         JSONObject json = shoppingList.toJson();
         saveToFile(json.toString(TAB));
+        EventLog.getInstance().logEvent(new Event("Shopping list written to file"));
     }
 
     // MODIFIES: this
@@ -55,6 +59,7 @@ public class JsonWriter {
     public void write(Day day) {
         JSONObject json = day.toJson();
         saveToFile(json.toString(TAB));
+        EventLog.getInstance().logEvent(new Event(day.getName() + " written to file"));
     }
 
     // MODIFIES: this

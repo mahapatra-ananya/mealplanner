@@ -30,7 +30,14 @@ public class Day extends MealList implements Writable {
         for (Meal m: this.meals) {
             returnStatement.add(m.getType() + " - " + m.getName());
         }
+        EventLog.getInstance().logEvent(new Event("Meals for " + this.name + " printed to console"));
         return returnStatement.toString();
+    }
+
+    public void addMeal(Meal m) {
+        super.addMeal(m);
+        EventLog.getInstance().logEvent(new Event(m.getName() + " (" + m.getType() + ")" + " added to "
+                + this.name));
     }
 
     // EFFECTS: inherited from Writable
