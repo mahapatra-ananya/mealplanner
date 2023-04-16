@@ -27,8 +27,8 @@ public class JsonReader {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         Meal meal = parseMeal(jsonObject);
-        EventLog.getInstance().logEvent(new Event(meal.getName() + " (" + meal.getType() + ") "
-                + " read from file"));
+       // EventLog.getInstance().logEvent(new Event(meal.getName() + " (" + meal.getType() + ") "
+       //         + " read from file"));
         return meal;
     }
 
@@ -37,7 +37,7 @@ public class JsonReader {
     public Pantry readPantry() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        EventLog.getInstance().logEvent(new Event("Pantry read from file"));
+       // EventLog.getInstance().logEvent(new Event("Pantry read from file"));
         return parsePantry(jsonObject);
     }
 
@@ -46,7 +46,7 @@ public class JsonReader {
     public ShoppingList readShoppingList() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        EventLog.getInstance().logEvent(new Event("Shopping list read from file"));
+       // EventLog.getInstance().logEvent(new Event("Shopping list read from file"));
         return parseShoppingList(jsonObject);
     }
 
@@ -56,7 +56,7 @@ public class JsonReader {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         Day day = parseDay(jsonObject);
-        EventLog.getInstance().logEvent(new Event(day.getName() + " read from file"));
+      //  EventLog.getInstance().logEvent(new Event(day.getName() + " read from file"));
         return day;
     }
 

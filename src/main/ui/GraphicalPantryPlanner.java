@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.Ingredient;
 import model.Pantry;
 import persistence.JsonReader;
@@ -11,11 +13,12 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 
 // ORACLE list demo used as reference
@@ -76,6 +79,8 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
 
         add(listScrollPane, BorderLayout.CENTER);
         add(mainPanel, BorderLayout.PAGE_END);
+
+       // addWindowListener(this);
     }
 
 
@@ -147,6 +152,45 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
         Ingredient ingredient = new Ingredient(name, doubleQuantity);
         return ingredient;
     }
+
+    /*private void printLog(EventLog el) {
+        for (Event next : el) {
+            System.out.println(next.getDate());
+            System.out.println("    " + next.getDescription());
+            System.out.println("");
+        }
+    }
+
+    public void windowClosed(WindowEvent e) {
+        //This will only be seen on standard output.
+        printLog(EventLog.getInstance());
+        System.out.println("hey");
+    }
+
+    public void windowOpened(WindowEvent e) {
+       // displayMessage("WindowListener method called: windowOpened.");
+    }
+
+    public void windowClosing(WindowEvent e) {
+        printLog(EventLog.getInstance());
+        System.out.println("hey");
+    }
+
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    public void windowDeactivated(WindowEvent e) {
+
+    }*/
 
     class SaveListener implements ActionListener {
 
@@ -312,10 +356,12 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
         // MODIFIES: list
         // EFFECTS: adds a new ingredient to the list
         public void actionPerformed(ActionEvent e) {
-            String name = ingredientNameTextField.getText();
+            String nameField = ingredientNameTextField.getText();
+            String quantityField = ingredientQuantityTextField.getText();
+            Ingredient i = createIngredient(nameField, quantityField);
 
             //User didn't type in a unique name...
-            if (name.equals("") || alreadyInList(name)) {
+            if (nameField.equals("") || alreadyInList(nameField)) {
                 Toolkit.getDefaultToolkit().beep();
                 ingredientNameTextField.requestFocusInWindow();
                 ingredientNameTextField.selectAll();
@@ -329,9 +375,7 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
                 index++;
             }
 
-            String nameField = ingredientNameTextField.getText();
-            String quantityField = ingredientQuantityTextField.getText();
-            Ingredient i = createIngredient(nameField, quantityField);
+            //Ingredient i = createIngredient(nameField, quantityField);
             listModel.addElement(i.getName() + ": " + i.getQuantity());
            // strings.add(nameField + ": " + quantityField);
             pantry.addIngredient(i);
@@ -411,4 +455,5 @@ public class GraphicalPantryPlanner extends JPanel implements ListSelectionListe
             }
         }
     }
+
 }
