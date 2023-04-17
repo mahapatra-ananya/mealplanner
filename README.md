@@ -50,15 +50,19 @@ ones and then clicking the trashcan button to delete it.
 Representative sample of events:
 
 Sun Apr 16 16:18:45 PDT 2023
+
 2.0 Banana added to pantry
 
 Sun Apr 16 16:18:54 PDT 2023
+
 12.0 Egg added to pantry
 
 Sun Apr 16 16:19:20 PDT 2023
+
 3.5 Onion added to pantry
 
 Sun Apr 16 16:19:23 PDT 2023
+
 2.0 Banana removed from pantry
 
 
