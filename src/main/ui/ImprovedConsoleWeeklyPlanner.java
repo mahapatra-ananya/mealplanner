@@ -8,9 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+
 // Structure of UI class and runWeeklyPlanner method referenced from TellerApp
 // JSONSerializationDemo application used as a reference for persistence
-public class ConsoleWeeklyPlanner {
+
+public class ImprovedConsoleWeeklyPlanner {
 
     private static final String JSON_PANTRY_FILE = "./data/pantry.json";
     private static final String JSON_SHOPPING_LIST_FILE = "./data/shopping_list.json";
@@ -58,7 +60,7 @@ public class ConsoleWeeklyPlanner {
     // EFFECTS: creates a new WeeklyPlanner with all the days of the week, a pantry, a shopping list, an empty list of
     //          meals for the week, and a scanner
     //          then runs the primary UI method
-    public ConsoleWeeklyPlanner() throws FileNotFoundException {
+    public ImprovedConsoleWeeklyPlanner() throws FileNotFoundException {
         sunday = new Day("Sunday");
         monday = new Day("Monday");
         tuesday = new Day("Tuesday");
@@ -595,5 +597,4 @@ public class ConsoleWeeklyPlanner {
             mealsForTheWeek.addMeal(m);
         }
     }
-
 }

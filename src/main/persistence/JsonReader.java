@@ -60,6 +60,18 @@ public class JsonReader {
         return day;
     }
 
+    // EFFECTS: reads day list from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public DayList readDayList() throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        DayList dayList = parseDayList(jsonObject);
+        //  EventLog.getInstance().logEvent(new Event(day.getName() + " read from file"));
+        return dayList;
+    }
+
+
+
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
@@ -75,9 +87,15 @@ public class JsonReader {
     private Meal parseMeal(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         Meal meal = new Meal(name);
-        meal.setTypeForJson(jsonObject.getString("type"));
+        setMealType(meal, jsonObject);
         addIngredients(meal, jsonObject);
         return meal;
+    }
+
+    private void setMealType(Meal meal, JSONObject jsonObject) {
+        if (jsonObject.getString("type") != null) {
+            meal.setTypeForJson(jsonObject.getString("type"));
+        }
     }
 
     // EFFECTS: parses pantry from JSON object and returns it
@@ -137,4 +155,29 @@ public class JsonReader {
     private void addMeal(MealList mealList, JSONObject jsonObject) {
         mealList.addMeal(parseMeal(jsonObject));
     }
+
+    // EFFECTS: parses day list from JSON object and returns it
+    private DayList parseDayList(JSONObject jsonObject) {
+        DayList dayList = new DayList();
+        addDays(dayList, jsonObject);
+        return dayList;
+    }
+
+    // MODIFIES: DayList
+    // EFFECTS: parses days from JSON object and adds them to day list
+    private void addDays(DayList dayList, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("days");
+        for (Object json : jsonArray) {
+            JSONObject nextDay = (JSONObject) json;
+            addDay(dayList, nextDay);
+        }
+    }
+
+    // MODIFIES: DayList
+    // EFFECTS: parses day from JSON object and adds it to day list
+    private void addDay(DayList dayList, JSONObject jsonObject) {
+        dayList.addDay(parseDay(jsonObject));
+    }
+
+
 }

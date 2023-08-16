@@ -40,6 +40,15 @@ public class Day extends MealList implements Writable {
                 + this.name));
     }
 
+    // EFFECTS: returns meals in this day as a JSON array
+    protected JSONArray mealsToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Meal meal : meals) {
+            jsonArray.put(meal.toJson());
+        }
+        return jsonArray;
+    }
+
     // EFFECTS: inherited from Writable
     @Override
     public JSONObject toJson() {
@@ -49,13 +58,5 @@ public class Day extends MealList implements Writable {
         return json;
     }
 
-    // EFFECTS: returns meals in this meal list as a JSON array
-    protected JSONArray mealsToJson() {
-        JSONArray jsonArray = new JSONArray();
-        for (Meal m : meals) {
-            jsonArray.put(m.toJson());
-        }
-        return jsonArray;
-    }
 
 }

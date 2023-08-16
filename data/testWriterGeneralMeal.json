@@ -1,0 +1,8 @@
+{
+    "name": "My meal",
+    "ingredients": [{
+        "quantity": 1,
+        "name": "i1"
+    }],
+    "type": "Meal type"
+}

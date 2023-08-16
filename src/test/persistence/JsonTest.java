@@ -19,5 +19,11 @@ public class JsonTest {
         assertEquals(length, meal.getIngredients().size());
     }
 
+    protected void checkDay(String name, double length, Day day) {
+        assertEquals(name, day.getName());
+        assertEquals(length, day.getMeals().size());
+    }
+
+
 
 }

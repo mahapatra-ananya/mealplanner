@@ -1,0 +1,36 @@
+{"days": [
+    {
+        "name": "d1",
+        "meals": [
+            {
+                "name": "My meal",
+                "ingredients": [],
+                "type": "b"
+            },
+            {
+                "name": "My meal again",
+                "ingredients": [],
+                "type": "l"
+            }
+        ]
+    },
+    {
+        "name": "d2",
+        "meals": []
+    },
+    {
+        "name": "d3",
+        "meals": [
+            {
+                "name": "My meal",
+                "ingredients": [],
+                "type": "b"
+            },
+            {
+                "name": "My meal again",
+                "ingredients": [],
+                "type": "l"
+            }
+        ]
+    }
+]}

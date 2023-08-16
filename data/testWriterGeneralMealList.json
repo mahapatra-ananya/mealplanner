@@ -1,0 +1,14 @@
+{"meals": [{
+    "name": "m",
+    "ingredients": [
+        {
+            "quantity": 20,
+            "name": "ingredient1"
+        },
+        {
+            "quantity": 3.3,
+            "name": "ingredient2"
+        }
+    ],
+    "type": "t"
+}]}

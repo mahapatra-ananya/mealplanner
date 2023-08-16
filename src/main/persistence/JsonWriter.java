@@ -62,6 +62,11 @@ public class JsonWriter {
       //  EventLog.getInstance().logEvent(new Event(day.getName() + " written to file"));
     }
 
+    public void write(DayList days) {
+        JSONObject json = days.toJson();
+        saveToFile(json.toString((TAB)));
+    }
+
     // MODIFIES: this
     // EFFECTS: closes writer
     public void close() {

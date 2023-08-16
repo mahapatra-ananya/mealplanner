@@ -1,0 +1,11 @@
+{
+    "name": "Sunday",
+    "meals": [{
+        "name": "sushi",
+        "ingredients": [{
+            "quantity": 1,
+            "name": "sushi"
+        }],
+        "type": "Snack"
+    }]
+}

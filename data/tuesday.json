@@ -1,0 +1,11 @@
+{
+    "name": "Tuesday",
+    "meals": [{
+        "name": "Rice",
+        "ingredients": [{
+            "quantity": 3,
+            "name": "rice"
+        }],
+        "type": "Breakfast"
+    }]
+}

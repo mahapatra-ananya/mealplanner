@@ -82,8 +82,8 @@ public abstract class IngredientList implements Writable {
     protected JSONArray ingredientsToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (Ingredient i : ingredients) {
-            jsonArray.put(i.toJson());
+        for (Ingredient ingredient : ingredients) {
+            jsonArray.put(ingredient.toJson());
         }
 
         return jsonArray;

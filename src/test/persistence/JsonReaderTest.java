@@ -45,6 +45,13 @@ class JsonReaderTest extends JsonTest {
             // pass
         }
 
+        JsonReader dayListReader = new JsonReader("./data/noSuchFile.json");
+        try {
+            DayList days = dayListReader.readDayList();
+            fail("IOException expected");
+        } catch (IOException e) {
+            // pass
+        }
     }
 
     @Test
@@ -80,6 +87,14 @@ class JsonReaderTest extends JsonTest {
             Day day = dayReader.readDay();
             assertEquals("My day", day.getName());
             assertEquals(0, day.getMeals().size());
+        } catch (IOException e) {
+            fail("Couldn't read from file");
+        }
+
+        JsonReader dayListReader = new JsonReader("./data/testReaderEmptyDayList.json");
+        try {
+            DayList days = dayListReader.readDayList();
+            assertEquals(0, days.getDays().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
@@ -135,7 +150,18 @@ class JsonReaderTest extends JsonTest {
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
-        
+
+        JsonReader dayListReader = new JsonReader("./data/testReaderGeneralDayList.json");
+        try {
+            DayList days = dayListReader.readDayList();
+            ArrayList<Day> theDays = days.getDays();
+            assertEquals(3, theDays.size());
+            checkDay("d1", 2, theDays.get(0));
+            checkDay("d2", 0, theDays.get(1));
+            checkDay("d3", 2, theDays.get(2));
+        } catch (IOException e) {
+            fail("Couldn't read from file");
+        }
 
     }
 }
