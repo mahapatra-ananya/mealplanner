@@ -1,0 +1,37 @@
+{"days": [
+    {
+        "name": "Sunday",
+        "meals": [{
+            "name": "Eggs and Sauce",
+            "ingredients": [{
+                "quantity": 2,
+                "name": "Egg"
+            }],
+            "type": "Breakfast"
+        }]
+    },
+    {
+        "name": "Monday",
+        "meals": []
+    },
+    {
+        "name": "Tuesday",
+        "meals": []
+    },
+    {
+        "name": "Wednesday",
+        "meals": []
+    },
+    {
+        "name": "Thursday",
+        "meals": []
+    },
+    {
+        "name": "Friday",
+        "meals": []
+    },
+    {
+        "name": "Saturday",
+        "meals": []
+    }
+]}

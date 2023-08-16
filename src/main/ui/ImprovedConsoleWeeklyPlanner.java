@@ -16,13 +16,13 @@ public class ImprovedConsoleWeeklyPlanner {
 
     private static final String JSON_PANTRY_FILE = "./data/pantry.json";
     private static final String JSON_SHOPPING_LIST_FILE = "./data/shopping_list.json";
-    private static final String JSON_SUNDAY_FILE = "./data/sunday.json";
-    private static final String JSON_MONDAY_FILE = "./data/monday.json";
-    private static final String JSON_TUESDAY_FILE = "./data/tuesday.json";
-    private static final String JSON_WEDNESDAY_FILE = "./data/wednesday.json";
-    private static final String JSON_THURSDAY_FILE = "./data/thursday.json";
-    private static final String JSON_FRIDAY_FILE = "./data/friday.json";
-    private static final String JSON_SATURDAY_FILE = "./data/saturday.json";
+   // private static final String JSON_SUNDAY_FILE = "./data/sunday.json";
+    //private static final String JSON_MONDAY_FILE = "./data/monday.json";
+    //private static final String JSON_TUESDAY_FILE = "./data/tuesday.json";
+    //private static final String JSON_WEDNESDAY_FILE = "./data/wednesday.json";
+    //private static final String JSON_THURSDAY_FILE = "./data/thursday.json";
+    //private static final String JSON_FRIDAY_FILE = "./data/friday.json";
+    //private static final String JSON_SATURDAY_FILE = "./data/saturday.json";
     private static final String JSON_DAYSOFTHEWEEK_FILE = "./data/days_of_the_week.json";
     private Day sunday;
     private Day monday;
@@ -91,20 +91,20 @@ public class ImprovedConsoleWeeklyPlanner {
         jsonPantryReader = new JsonReader(JSON_PANTRY_FILE);
         jsonShoppingListWriter = new JsonWriter(JSON_SHOPPING_LIST_FILE);
         jsonShoppingListReader = new JsonReader(JSON_SHOPPING_LIST_FILE);
-        jsonSundayWriter = new JsonWriter(JSON_SUNDAY_FILE);
-        jsonSundayReader = new JsonReader(JSON_SUNDAY_FILE);
-        jsonMondayWriter = new JsonWriter(JSON_MONDAY_FILE);
-        jsonMondayReader = new JsonReader(JSON_MONDAY_FILE);
-        jsonTuesdayWriter = new JsonWriter(JSON_TUESDAY_FILE);
-        jsonTuesdayReader = new JsonReader(JSON_TUESDAY_FILE);
-        jsonWednesdayWriter = new JsonWriter(JSON_WEDNESDAY_FILE);
-        jsonWednesdayReader = new JsonReader(JSON_WEDNESDAY_FILE);
-        jsonThursdayWriter = new JsonWriter(JSON_THURSDAY_FILE);
-        jsonThursdayReader = new JsonReader(JSON_THURSDAY_FILE);
-        jsonFridayWriter = new JsonWriter(JSON_FRIDAY_FILE);
-        jsonFridayReader = new JsonReader(JSON_FRIDAY_FILE);
-        jsonSaturdayWriter = new JsonWriter(JSON_SATURDAY_FILE);
-        jsonSaturdayReader = new JsonReader(JSON_SATURDAY_FILE);
+       // jsonSundayWriter = new JsonWriter(JSON_SUNDAY_FILE);
+        //jsonSundayReader = new JsonReader(JSON_SUNDAY_FILE);
+        //jsonMondayWriter = new JsonWriter(JSON_MONDAY_FILE);
+        //jsonMondayReader = new JsonReader(JSON_MONDAY_FILE);
+        //jsonTuesdayWriter = new JsonWriter(JSON_TUESDAY_FILE);
+        //jsonTuesdayReader = new JsonReader(JSON_TUESDAY_FILE);
+        //jsonWednesdayWriter = new JsonWriter(JSON_WEDNESDAY_FILE);
+        //jsonWednesdayReader = new JsonReader(JSON_WEDNESDAY_FILE);
+        //jsonThursdayWriter = new JsonWriter(JSON_THURSDAY_FILE);
+        //jsonThursdayReader = new JsonReader(JSON_THURSDAY_FILE);
+        //jsonFridayWriter = new JsonWriter(JSON_FRIDAY_FILE);
+        //jsonFridayReader = new JsonReader(JSON_FRIDAY_FILE);
+        //jsonSaturdayWriter = new JsonWriter(JSON_SATURDAY_FILE);
+        //jsonSaturdayReader = new JsonReader(JSON_SATURDAY_FILE);
         jsonDaysOfTheWeekWriter = new JsonWriter(JSON_DAYSOFTHEWEEK_FILE);
         jsonDaysOfTheWeekReader = new JsonReader(JSON_DAYSOFTHEWEEK_FILE);
     }
@@ -318,13 +318,9 @@ public class ImprovedConsoleWeeklyPlanner {
 
     // EFFECTS: displays all the meals planned for each day of the week and displays their ingredients if user desires
     private void doViewingWeeklyPlanner() {
-        System.out.println("Sunday: " + sunday.printableMealList());
-        System.out.println("Monday: " + monday.printableMealList());
-        System.out.println("Tuesday: " + tuesday.printableMealList());
-        System.out.println("Wednesday: " + wednesday.printableMealList());
-        System.out.println("Thursday: " + thursday.printableMealList());
-        System.out.println("Friday: " + friday.printableMealList());
-        System.out.println("Saturday: " + saturday.printableMealList());
+        for (Day day: daysOfTheWeek.getDays()) {
+            System.out.println(day.getName() + ": " + day.printableMealList());
+        }
 
         viewIngredientsForMeal();
 
@@ -450,7 +446,7 @@ public class ImprovedConsoleWeeklyPlanner {
                 savePantryToFile();
                 loop = false;
             } else if (choice.equals("w")) {
-                saveWeeklyPlannerToFile();
+                saveDaysOfTheWeekToFile();
                 loop = false;
             }
         }
@@ -481,49 +477,61 @@ public class ImprovedConsoleWeeklyPlanner {
     }
 
     // EFFECTS: saves weekly planner to file
-    private void saveWeeklyPlannerToFile() {
-        openDayWriters();
-        writeDaysToFile();
-        closeDayWriters();
-        System.out.println("Saved weekly planner to file.");
-    }
+    //private void saveWeeklyPlannerToFile() {
+    //  openDayWriters();
+    //  writeDaysToFile();
+    //  closeDayWriters();
+    //  System.out.println("Saved weekly planner to file.");
+    //}
 
-    // EFFECTS: opens the JSON writers for each day
-    private void openDayWriters() {
+    // EFFECTS: saves days of the week to file
+    private void saveDaysOfTheWeekToFile() {
         try {
-            jsonSundayWriter.open();
-            jsonMondayWriter.open();
-            jsonTuesdayWriter.open();
-            jsonWednesdayWriter.open();
-            jsonThursdayWriter.open();
-            jsonFridayWriter.open();
-            jsonSaturdayWriter.open();
+            jsonDaysOfTheWeekWriter.open();
+            jsonDaysOfTheWeekWriter.write(daysOfTheWeek);
+            jsonDaysOfTheWeekWriter.close();
+            System.out.println("Saved weekly planner to file.");
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file.");
         }
     }
 
+    // EFFECTS: opens the JSON writers for each day
+    // private void openDayWriters() {
+    //  try {
+    //      jsonSundayWriter.open();
+    //      jsonMondayWriter.open();
+    //      jsonTuesdayWriter.open();
+    //      jsonWednesdayWriter.open();
+    //      jsonThursdayWriter.open();
+    //      jsonFridayWriter.open();
+    //      jsonSaturdayWriter.open();
+    //  } catch (FileNotFoundException e) {
+    //      System.out.println("Unable to write to file.");
+    //  }
+    //}
+
     // EFFECTS: writes to the JSON writers for each day
-    private void writeDaysToFile() {
-        jsonSundayWriter.write(sunday);
-        jsonMondayWriter.write(monday);
-        jsonTuesdayWriter.write(tuesday);
-        jsonWednesdayWriter.write(wednesday);
-        jsonThursdayWriter.write(thursday);
-        jsonFridayWriter.write(friday);
-        jsonSaturdayWriter.write(saturday);
-    }
+    //private void writeDaysToFile() {
+    //  jsonSundayWriter.write(sunday);
+    //  jsonMondayWriter.write(monday);
+    //  jsonTuesdayWriter.write(tuesday);
+    //  jsonWednesdayWriter.write(wednesday);
+    ////  jsonThursdayWriter.write(thursday);
+    //jsonFridayWriter.write(friday);
+    //  jsonSaturdayWriter.write(saturday);
+    //}
 
     // EFFECTS: closes the JSON writers for each day
-    private void closeDayWriters() {
-        jsonSundayWriter.close();
-        jsonMondayWriter.close();
-        jsonTuesdayWriter.close();
-        jsonWednesdayWriter.close();
-        jsonThursdayWriter.close();
-        jsonFridayWriter.close();
-        jsonSaturdayWriter.close();
-    }
+    //private void closeDayWriters() {
+    //  jsonSundayWriter.close();
+    //  jsonMondayWriter.close();
+    //  jsonTuesdayWriter.close();
+    //  jsonWednesdayWriter.close();
+    //  jsonThursdayWriter.close();
+    //  jsonFridayWriter.close();
+    //  jsonSaturdayWriter.close();
+    // }
 
     // EFFECTS: allows users to choose to load pantry, shopping list and weekly planner from file
     private void doLoadingFromFile() {
@@ -540,7 +548,7 @@ public class ImprovedConsoleWeeklyPlanner {
                 loadPantryFromFile();
                 loop = false;
             } else if (choice.equals("w")) {
-                loadWeeklyPlannerFromFile();
+                loadDaysOfTheWeekFromFile();
                 loop = false;
             }
         }
@@ -566,29 +574,43 @@ public class ImprovedConsoleWeeklyPlanner {
         }
     }
 
-    // EFFECTS: loads weekly planner from file
-    private void loadWeeklyPlannerFromFile() {
+    // EFFECTS: loads days of the week from file
+    private void loadDaysOfTheWeekFromFile() {
         try {
-            sunday = jsonSundayReader.readDay();
-            monday = jsonMondayReader.readDay();
-            tuesday = jsonTuesdayReader.readDay();
-            wednesday = jsonWednesdayReader.readDay();
-            thursday = jsonThursdayReader.readDay();
-            friday = jsonFridayReader.readDay();
-            saturday = jsonSaturdayReader.readDay();
-            mealsForTheWeek = new MealList();
-            addMealsToMealsForTheWeekFromFile(sunday);
-            addMealsToMealsForTheWeekFromFile(monday);
-            addMealsToMealsForTheWeekFromFile(tuesday);
-            addMealsToMealsForTheWeekFromFile(wednesday);
-            addMealsToMealsForTheWeekFromFile(thursday);
-            addMealsToMealsForTheWeekFromFile(friday);
-            addMealsToMealsForTheWeekFromFile(saturday);
+            daysOfTheWeek = jsonDaysOfTheWeekReader.readDayList();
+            for (Day day: daysOfTheWeek.getDays()) {
+                addMealsToMealsForTheWeekFromFile(day);
+            }
             System.out.println("Loaded weekly planner from file.");
         } catch (IOException e) {
             System.out.println("Unable to read from file.");
         }
+
     }
+
+    // EFFECTS: loads weekly planner from file
+    //private void loadWeeklyPlannerFromFile() {
+    //  try {
+    //      sunday = jsonSundayReader.readDay();
+    //      monday = jsonMondayReader.readDay();
+    //      tuesday = jsonTuesdayReader.readDay();
+    //      wednesday = jsonWednesdayReader.readDay();
+    //      thursday = jsonThursdayReader.readDay();
+    //      friday = jsonFridayReader.readDay();
+    //      saturday = jsonSaturdayReader.readDay();
+    //      mealsForTheWeek = new MealList();
+    //      addMealsToMealsForTheWeekFromFile(sunday);
+    //      addMealsToMealsForTheWeekFromFile(monday);
+    //      addMealsToMealsForTheWeekFromFile(tuesday);
+    //      addMealsToMealsForTheWeekFromFile(wednesday);
+    //      addMealsToMealsForTheWeekFromFile(thursday);
+    //      addMealsToMealsForTheWeekFromFile(friday);
+    //      addMealsToMealsForTheWeekFromFile(saturday);
+    //      System.out.println("Loaded weekly planner from file.");
+    //  } catch (IOException e) {
+    //      System.out.println("Unable to read from file.");
+    //  }
+    //}
 
     //  MODIFIES: mealsForTheWeek
     //  EFFECTS: adds meals from a loaded day of the week to mealsForTheWeek
